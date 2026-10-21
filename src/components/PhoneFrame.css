@@ -1,0 +1,36 @@
+.phone-frame {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  background: var(--color-bg);
+}
+
+/* Blurred copy of the background. Placeholder gradient until truck photos exist. */
+.phone-frame__backdrop {
+  display: none;
+  position: fixed;
+  inset: -40px;
+  background: var(--app-background);
+  filter: blur(24px) brightness(0.85);
+  transform: scale(1.1);
+}
+
+.phone-frame__device {
+  position: relative;
+  width: 100%;
+  min-height: 100dvh;
+  background: var(--app-background);
+  overflow-x: hidden;
+}
+
+@media (min-width: 600px) {
+  .phone-frame__backdrop {
+    display: block;
+  }
+
+  .phone-frame__device {
+    max-width: var(--phone-width);
+    box-shadow: 0 0 40px rgb(0 0 0 / 0.35);
+  }
+}

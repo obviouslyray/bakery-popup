@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#5a3a22"/>
+  <!-- placeholder mark: a coffee cup with steam; replace with real artwork -->
+  <path d="M136 220h200v84a92 92 0 0 1-92 92h-16a92 92 0 0 1-92-92z" fill="#f6efe6"/>
+  <path d="M336 244h20a44 44 0 0 1 0 88h-26" fill="none" stroke="#f6efe6" stroke-width="22" stroke-linecap="round"/>
+  <path d="M196 116c-18 22 18 38 0 64M248 104c-18 26 18 46 0 76M300 116c-18 22 18 38 0 64" fill="none" stroke="#e0a458" stroke-width="16" stroke-linecap="round"/>
+</svg>
