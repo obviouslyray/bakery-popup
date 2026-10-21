@@ -1,0 +1,58 @@
+:root {
+  --color-primary: #5a3a22;
+  --color-accent: #e0a458;
+  --color-bg: #2b1d12;
+  --color-surface: #fffaf3;
+  --color-text: #2b1d12;
+  --color-muted: #8a7563;
+  --color-border: #e6d9c8;
+
+  /* Placeholder until we have the truck's serving-window photo. */
+  --app-background: linear-gradient(160deg, #f6efe6 0%, #ead7bf 55%, #d9b48a 100%);
+
+  --phone-width: 430px;
+  --tab-bar-height: 60px;
+
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.5;
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  overscroll-behavior-y: none;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+}
+
+.screen {
+  padding: calc(24px + env(safe-area-inset-top)) 20px 24px;
+}
+
+.screen--with-tabs {
+  padding-bottom: calc(var(--tab-bar-height) + env(safe-area-inset-bottom) + 24px);
+}
+
+.screen h1 {
+  margin: 0 0 8px;
+  font-size: 1.75rem;
+  color: var(--color-primary);
+}
+
+.placeholder {
+  margin: 0;
+  color: var(--color-muted);
+}
