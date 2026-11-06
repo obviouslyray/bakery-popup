@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import TransferQr from '../components/TransferQr.jsx'
-import { formatStampDate, loadStamps, stampStyle } from '../lib/stamps.js'
+import QrSheet from '../components/QrSheet.jsx'
+import { formatStampDate, loadStamps, stampStyle, transferUrl } from '../lib/stamps.js'
 import './Passport.css'
 
 const STAMPS_PER_PAGE = 10
@@ -17,7 +17,8 @@ export default function Passport() {
   // Always at least one page; a new page opens once the last one is full.
   const pageCount = Math.max(1, Math.ceil(stamps.length / STAMPS_PER_PAGE))
   const [page, setPage] = useState(0)
-  const [showTransfer, setShowTransfer] = useState(false)
+  const [sheet, setSheet] = useState(null) // null | 'transfer' | 'share'
+  const closeSheet = () => setSheet(null)
 
   const first = page * STAMPS_PER_PAGE
   const pageStamps = stamps.slice(first, first + STAMPS_PER_PAGE)
@@ -76,7 +77,7 @@ export default function Passport() {
         </footer>
       </div>
 
-      <button type="button" className="passport__transfer" onClick={() => setShowTransfer(true)}>
+      <button type="button" className="passport__action" onClick={() => setSheet('transfer')}>
         <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor"
           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" />
@@ -84,8 +85,37 @@ export default function Passport() {
         </svg>
         Move stamps to a new phone
       </button>
+      <button type="button" className="passport__action passport__action--secondary" onClick={() => setSheet('share')}>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor"
+          strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="6" y="2" width="12" height="20" rx="2" /><path d="M11 18h2" />
+        </svg>
+        Share the app
+      </button>
 
-      {showTransfer && <TransferQr stamps={stamps} onClose={() => setShowTransfer(false)} />}
+      {sheet === 'transfer' && (
+        <QrSheet
+          title="Move stamps to a new phone"
+          url={stamps.length > 0 ? transferUrl(stamps) : null}
+          alt={`QR code holding ${stamps.length} stamps`}
+          onClose={closeSheet}
+        >
+          {stamps.length > 0
+            ? `On the new phone, open the camera and scan this code. Your ${stamps.length} stamps will be added to the passport there.`
+            : 'There are no stamps to move yet.'}
+        </QrSheet>
+      )}
+      {sheet === 'share' && (
+        <QrSheet
+          title="Share the app"
+          url={`${window.location.origin}${window.location.pathname}#/install`}
+          alt="QR code linking to the app's install page"
+          onClose={closeSheet}
+        >
+          Have a friend scan this with their phone camera. It opens a page that helps them add the app to
+          their home screen.
+        </QrSheet>
+      )}
     </section>
   )
 }

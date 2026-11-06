@@ -1,4 +1,4 @@
-.transfer {
+.qr-sheet {
   position: fixed;
   inset: 0;
   z-index: 20;
@@ -8,7 +8,7 @@
   background: rgb(30 20 10 / 0.55);
 }
 
-.transfer__sheet {
+.qr-sheet__sheet {
   width: 100%;
   max-width: var(--phone-width);
   padding: 24px 20px calc(20px + env(safe-area-inset-bottom));
@@ -18,13 +18,13 @@
   box-shadow: 0 -8px 24px rgb(0 0 0 / 0.25);
 }
 
-.transfer__title {
+.qr-sheet__title {
   margin: 0 0 16px;
   font-size: 1.15rem;
   color: var(--color-primary);
 }
 
-.transfer__code {
+.qr-sheet__code {
   display: grid;
   place-items: center;
   width: min(280px, 100%);
@@ -34,20 +34,20 @@
   background: #fff;
 }
 
-.transfer__code img {
+.qr-sheet__code img {
   display: block;
   width: 100%;
   height: auto;
   border-radius: 12px;
 }
 
-.transfer__text {
+.qr-sheet__text {
   margin: 16px 0 0;
   font-size: 0.9rem;
   color: var(--color-muted);
 }
 
-.transfer__close {
+.qr-sheet__close {
   width: 100%;
   margin-top: 20px;
   padding: 14px 16px;
@@ -60,7 +60,7 @@
   cursor: pointer;
 }
 
-.transfer__close:focus-visible {
+.qr-sheet__close:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
