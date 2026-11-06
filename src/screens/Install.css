@@ -1,0 +1,64 @@
+.install {
+  text-align: center;
+}
+
+.install__icon {
+  display: block;
+  margin: 8px auto 16px;
+  border-radius: 22px;
+  box-shadow: 0 6px 18px rgb(60 40 20 / 0.25);
+}
+
+.install__body {
+  margin-top: 28px;
+}
+
+.install__button {
+  width: 100%;
+  border: 0;
+  font: inherit;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.install__hint {
+  margin: 12px 0 0;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+
+.install__done {
+  margin: 0;
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--color-surface);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.install__steps {
+  margin: 0;
+  padding: 16px 16px 16px 40px;
+  border-radius: 12px;
+  background: var(--color-surface);
+  text-align: left;
+  box-shadow: 0 4px 12px rgb(60 40 20 / 0.12);
+}
+
+.install__steps li + li {
+  margin-top: 10px;
+}
+
+.install__inline-icon {
+  vertical-align: -3px;
+  color: #1a73e8;
+}
+
+.install__skip {
+  display: inline-block;
+  margin-top: 28px;
+  padding: 8px;
+  font-weight: 600;
+  color: var(--color-primary);
+}
