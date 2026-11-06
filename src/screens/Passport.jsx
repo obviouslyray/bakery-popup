@@ -30,6 +30,7 @@ export default function Passport() {
   // Always at least one page; a new page opens once the last one is full.
   const pageCount = Math.max(1, Math.ceil(stamps.length / STAMPS_PER_PAGE))
   const [page, setPage] = useState(0)
+  const [transferNote, setTransferNote] = useState(false)
 
   const pageStamps = stamps.slice(page * STAMPS_PER_PAGE, (page + 1) * STAMPS_PER_PAGE)
   const slots = Array.from({ length: STAMPS_PER_PAGE }, (_, i) => pageStamps[i] ?? null)
@@ -85,6 +86,17 @@ export default function Passport() {
           </button>
         </footer>
       </div>
+
+      {/* Placeholder: will show a QR code holding the stamps for a new phone to scan. */}
+      <button type="button" className="passport__transfer" onClick={() => setTransferNote(true)}>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor"
+          strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" />
+          <rect x="3" y="14" width="7" height="7" rx="1" /><path d="M14 14h3v3M21 14v.01M17 21h4v-4M14 18v3" />
+        </svg>
+        Move stamps to a new phone
+      </button>
+      {transferNote && <p className="placeholder passport__note">Coming soon.</p>}
       <p className="placeholder passport__note">Sample stamps shown.</p>
     </section>
   )
