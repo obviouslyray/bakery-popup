@@ -5,11 +5,13 @@ import Home from './screens/Home.jsx'
 import Calendar from './screens/Calendar.jsx'
 import Location from './screens/Location.jsx'
 import Menu from './screens/Menu.jsx'
+import Passport from './screens/Passport.jsx'
 import Owner from './screens/Owner.jsx'
 import Install from './screens/Install.jsx'
 
 // Routes that show the bottom tab bar. /owner and /install stand on their own.
-const TAB_ROUTES = ['/', '/calendar', '/location', '/menu']
+// /location has no tab of its own but keeps the tab bar.
+const TAB_ROUTES = ['/', '/calendar', '/menu', '/passport', '/location']
 
 export default function App() {
   const { pathname } = useLocation()
@@ -23,6 +25,7 @@ export default function App() {
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/location" element={<Location />} />
           <Route path="/menu" element={<Menu />} />
+          <Route path="/passport" element={<Passport />} />
           <Route path="/owner" element={<Owner />} />
           <Route path="/install" element={<Install />} />
           <Route path="*" element={<Navigate to="/" replace />} />
