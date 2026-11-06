@@ -6,6 +6,7 @@ import Calendar from './screens/Calendar.jsx'
 import Location from './screens/Location.jsx'
 import Menu from './screens/Menu.jsx'
 import Passport from './screens/Passport.jsx'
+import Import from './screens/Import.jsx'
 import Owner from './screens/Owner.jsx'
 import Install from './screens/Install.jsx'
 
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="/location" element={<Location />} />
           <Route path="/menu" element={<Menu />} />
           <Route path="/passport" element={<Passport />} />
+          <Route path="/import" element={<Import />} />
           <Route path="/owner" element={<Owner />} />
           <Route path="/install" element={<Install />} />
           <Route path="*" element={<Navigate to="/" replace />} />
