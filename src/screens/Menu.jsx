@@ -1,13 +1,16 @@
 import { useCallback, useEffect, useState } from 'react'
 import MenuItemEditor from '../components/MenuItemEditor.jsx'
 import { useAuth } from '../lib/auth.jsx'
-import { fetchMenu, formatPrice, menuPhotoUrl, saveOrder, updateMenuItem } from '../lib/menu.js'
+import { BEVERAGE_SECTIONS, fetchMenu, formatPrice, menuPhotoUrl, saveOrder, updateMenuItem } from '../lib/menu.js'
 import './Menu.css'
 
+// Folder tabs. The Beverages folder holds category 'coffee' in the database.
 const SECTIONS = [
   { category: 'bakery', title: 'Bakery' },
-  { category: 'coffee', title: 'Coffee' },
+  { category: 'coffee', title: 'Beverages' },
 ]
+
+const isAddOn = (item) => BEVERAGE_SECTIONS.find((s) => s.key === item.section)?.addOn
 
 const Arrow = ({ up }) => (
   <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor"
@@ -52,7 +55,7 @@ function MenuItem({ item, children }) {
         <div className="menu-item__body">
           <div className="menu-item__top">
             <h3 className="menu-item__name">{item.name}</h3>
-            <span className="menu-item__price">{formatPrice(item.price)}</span>
+            <span className="menu-item__price">{isAddOn(item) ? '+' : ''}{formatPrice(item.price)}</span>
           </div>
           {(item.sold_out || !item.on_today) && (
             <div className="menu-item__labels">
@@ -114,8 +117,9 @@ export default function Menu() {
 
   const onToggle = (item, patch) => run(() => updateMenuItem(item.id, patch))
 
+  // Up/down moves an item within its own group (same folder and, for beverages, same section).
   const onMove = (item, step) => run(() => {
-    const list = state.items.filter((i) => i.category === item.category)
+    const list = state.items.filter((i) => i.category === item.category && (i.section ?? null) === (item.section ?? null))
     const from = list.findIndex((i) => i.id === item.id)
     const reordered = [...list]
     reordered.splice(from + step, 0, ...reordered.splice(from, 1))
@@ -145,8 +149,52 @@ export default function Menu() {
     document.getElementById(`folder-tab-${target}`)?.focus()
   }
 
-  const current = SECTIONS.find((s) => s.category === folder)
   const folderItems = state.items.filter((item) => item.category === folder)
+
+  const itemList = (items) => (
+    <ul className="menu__list">
+      {items.map((item, i) => (
+        <MenuItem key={item.id} item={item}>
+          {isOwner && (
+            <OwnerControls item={item} isFirst={i === 0} isLast={i === items.length - 1} busy={busy}
+              onToggle={onToggle} onEdit={(it) => setEditing({ item: it })} onMove={onMove} />
+          )}
+        </MenuItem>
+      ))}
+    </ul>
+  )
+
+  // Beverages folder: items grouped under section headers. Customers do not see
+  // empty sections (except Seasonal's "coming soon" line) or items with no section.
+  const beverageSections = () => {
+    const groups = BEVERAGE_SECTIONS.map((s) => ({ ...s, items: folderItems.filter((i) => i.section === s.key) }))
+    const unsectioned = folderItems.filter((i) => !BEVERAGE_SECTIONS.some((s) => s.key === i.section))
+    if (!isOwner && groups.every((g) => g.items.length === 0)) {
+      return <p className="placeholder folders__empty">Beverages coming soon.</p>
+    }
+    return (
+      <>
+        {groups.map((g) => {
+          if (g.items.length === 0 && !isOwner && !g.emptyText) return null
+          return (
+            <section key={g.key} className="menu-group" aria-labelledby={`menu-group-${g.key}`}>
+              <h2 id={`menu-group-${g.key}`} className="menu-group__title">{g.title}</h2>
+              {g.items.length > 0
+                ? itemList(g.items)
+                : <p className="menu-group__empty">{g.emptyText ?? 'None yet.'}</p>}
+            </section>
+          )
+        })}
+        {isOwner && unsectioned.length > 0 && (
+          <section className="menu-group menu-group--hidden" aria-labelledby="menu-group-none">
+            <h2 id="menu-group-none" className="menu-group__title">Not in a section</h2>
+            <p className="menu-group__empty">Hidden from customers. Edit an item to choose a section.</p>
+            {itemList(unsectioned)}
+          </section>
+        )}
+      </>
+    )
+  }
 
   return (
     <section className="menu">
@@ -176,24 +224,12 @@ export default function Menu() {
           {state.status === 'error' && (
             <p className="placeholder">The menu is not available right now. Please try again soon.</p>
           )}
-          {state.status === 'ready' && folderItems.length === 0 && (
-            <p className="placeholder folders__empty">
-              {isOwner ? `No ${current.title.toLowerCase()} items yet.` : `${current.title} items coming soon.`}
-            </p>
+          {state.status === 'ready' && folder === 'coffee' && beverageSections()}
+          {state.status === 'ready' && folder === 'bakery' && (folderItems.length > 0
+            ? itemList(folderItems)
+            : <p className="placeholder folders__empty">{isOwner ? 'No bakery items yet.' : 'Bakery items coming soon.'}</p>
           )}
-          {state.status === 'ready' && folderItems.length > 0 && (
-            <ul className="menu__list">
-              {folderItems.map((item, i) => (
-                <MenuItem key={item.id} item={item}>
-                  {isOwner && (
-                    <OwnerControls item={item} isFirst={i === 0} isLast={i === folderItems.length - 1} busy={busy}
-                      onToggle={onToggle} onEdit={(it) => setEditing({ item: it })} onMove={onMove} />
-                  )}
-                </MenuItem>
-              ))}
-            </ul>
-          )}
-          {state.status === 'ready' && addButton(folder, `Add ${current.title.toLowerCase()} item`)}
+          {state.status === 'ready' && addButton(folder, `Add ${folder === 'coffee' ? 'a beverage' : 'a bakery item'}`)}
         </div>
       </div>
 

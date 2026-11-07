@@ -1,7 +1,16 @@
 import { supabase } from './supabase.js'
 import { preparePhoto } from './image.js'
 
-const COLUMNS = 'id, name, description, price, category, ingredients, allergens, photo_path, on_today, sold_out, sort_order'
+const COLUMNS = 'id, name, description, price, category, ingredients, allergens, photo_path, on_today, sold_out, sort_order, section'
+
+// Sections inside the Beverages folder (category 'coffee'), in display order.
+// A beverage with no section stays in the database but is hidden from customers.
+export const BEVERAGE_SECTIONS = [
+  { key: 'coffees', title: 'Coffees' },
+  { key: 'fresh-squeezed', title: 'Fresh-Squeezed' },
+  { key: 'seasonal', title: 'Seasonal', emptyText: 'New seasonal drinks coming soon.' },
+  { key: 'milk-options', title: 'Milk Options', addOn: true },
+]
 const BUCKET = 'menu-photos'
 
 // Reads the menu. Row level security decides what comes back: customers get
