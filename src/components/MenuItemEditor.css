@@ -35,7 +35,8 @@
 }
 
 .editor__field input,
-.editor__field textarea {
+.editor__field textarea,
+.editor__field select {
   width: 100%;
   padding: 11px 12px;
   border: 1px solid var(--color-border);
@@ -49,7 +50,8 @@
 }
 
 .editor__field input:focus,
-.editor__field textarea:focus {
+.editor__field textarea:focus,
+.editor__field select:focus {
   outline: 2px solid var(--color-accent);
   outline-offset: 1px;
 }
@@ -222,4 +224,10 @@
   font-weight: 600;
   color: #b23a32;
   cursor: pointer;
+}
+
+.editor__hint {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-muted);
 }

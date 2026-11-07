@@ -289,3 +289,48 @@
   color: var(--color-surface);
   cursor: pointer;
 }
+
+/* Section headers inside the Beverages folder, styled like labels on a folder divider. */
+.menu-group + .menu-group {
+  margin-top: 22px;
+}
+
+.menu-group__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 2px 10px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+/* Thin kraft rule after the header text. */
+.menu-group__title::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--kraft);
+  opacity: 0.7;
+}
+
+.menu-group__empty {
+  margin: 0 2px;
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--kraft-text);
+}
+
+.menu-group--hidden {
+  padding: 10px;
+  border: 2px dashed var(--kraft);
+  border-radius: 12px;
+}
+
+.menu-group--hidden .menu-group__empty {
+  margin-bottom: 10px;
+}

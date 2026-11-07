@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import {
-  COMMON_ALLERGENS, deleteMenuItem, insertMenuItem, menuPhotoUrl, removeMenuPhoto, updateMenuItem, uploadMenuPhoto,
+  BEVERAGE_SECTIONS, COMMON_ALLERGENS, deleteMenuItem, insertMenuItem, menuPhotoUrl, removeMenuPhoto, updateMenuItem,
+  uploadMenuPhoto,
 } from '../lib/menu.js'
 import './MenuItemEditor.css'
 
@@ -10,6 +11,8 @@ export default function MenuItemEditor({ item, defaultCategory, nextSortOrder, o
   const [form, setForm] = useState(() => ({
     name: item?.name ?? '',
     category: item?.category ?? defaultCategory,
+    // New beverages start in Coffees; '' means no section (hidden from customers).
+    section: item ? (item.section ?? '') : 'coffees',
     price: item ? String(Number(item.price).toFixed(2)) : '',
     description: item?.description ?? '',
     ingredients: item?.ingredients ?? '',
@@ -66,6 +69,7 @@ export default function MenuItemEditor({ item, defaultCategory, nextSortOrder, o
       const row = {
         name,
         category: form.category,
+        section: form.category === 'coffee' && form.section ? form.section : null,
         price: Math.round(price * 100) / 100,
         description: form.description.trim() || null,
         ingredients: form.ingredients.trim() || null,
@@ -116,11 +120,24 @@ export default function MenuItemEditor({ item, defaultCategory, nextSortOrder, o
             {['bakery', 'coffee'].map((c) => (
               <button key={c} type="button" aria-pressed={form.category === c}
                 onClick={() => setForm({ ...form, category: c })}>
-                {c === 'bakery' ? 'Bakery' : 'Coffee'}
+                {c === 'bakery' ? 'Bakery' : 'Beverages'}
               </button>
             ))}
           </div>
         </div>
+
+        {form.category === 'coffee' && (
+          <label className="editor__field">
+            Section
+            <select value={form.section} onChange={set('section')}>
+              {BEVERAGE_SECTIONS.map((s) => <option key={s.key} value={s.key}>{s.title}</option>)}
+              <option value="">None (hidden from customers)</option>
+            </select>
+            {form.section === 'milk-options' && (
+              <span className="editor__hint">Shown as an add-on price, like +$0.75.</span>
+            )}
+          </label>
+        )}
 
         <label className="editor__field">
           Price
