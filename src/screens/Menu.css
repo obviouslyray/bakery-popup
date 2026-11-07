@@ -111,3 +111,99 @@
   border: 2px dashed var(--color-border);
   box-shadow: none;
 }
+
+.menu-item {
+  flex-direction: column;
+}
+
+.menu-item__main {
+  display: flex;
+  gap: 12px;
+}
+
+.menu__error {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #fbe9e7;
+  font-weight: 600;
+  color: #b23a32;
+}
+
+.menu__add {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  border: 2px dashed var(--color-primary);
+  border-radius: 12px;
+  background: rgb(255 250 243 / 0.7);
+  font: inherit;
+  font-weight: 600;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+/* Owner controls inside an item card. */
+.menu-owner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--color-border);
+}
+
+.menu-owner__spacer {
+  flex: 1;
+}
+
+.menu-owner__toggle {
+  padding: 6px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: #fff;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-muted);
+  cursor: pointer;
+}
+
+.menu-owner__toggle[aria-pressed='true'] {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.menu-owner__icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.menu-owner__icon:disabled,
+.menu-owner__toggle:disabled,
+.menu-owner__edit:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.menu-owner__edit {
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--color-primary);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-surface);
+  cursor: pointer;
+}

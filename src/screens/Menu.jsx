@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import MenuItemEditor from '../components/MenuItemEditor.jsx'
 import { useAuth } from '../lib/auth.jsx'
-import { fetchMenu, formatPrice, menuPhotoUrl } from '../lib/menu.js'
+import { fetchMenu, formatPrice, menuPhotoUrl, saveOrder, updateMenuItem } from '../lib/menu.js'
 import './Menu.css'
 
 const SECTIONS = [
@@ -8,36 +9,85 @@ const SECTIONS = [
   { category: 'coffee', title: 'Coffee' },
 ]
 
-function MenuItem({ item }) {
+const Arrow = ({ up }) => (
+  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor"
+    strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round">
+    <path d={up ? 'M6 15l6-6 6 6' : 'M6 9l6 6 6-6'} />
+  </svg>
+)
+
+// Owner-only controls under an item: quick switches, edit, and move up/down.
+function OwnerControls({ item, isFirst, isLast, busy, onToggle, onEdit, onMove }) {
+  return (
+    <div className="menu-owner">
+      <button type="button" className="menu-owner__toggle" aria-pressed={item.sold_out} disabled={busy}
+        onClick={() => onToggle(item, { sold_out: !item.sold_out })}>
+        Sold out
+      </button>
+      <button type="button" className="menu-owner__toggle" aria-pressed={item.on_today} disabled={busy}
+        onClick={() => onToggle(item, { on_today: !item.on_today })}>
+        On today
+      </button>
+      <span className="menu-owner__spacer" />
+      <button type="button" className="menu-owner__icon" aria-label={`Move ${item.name} up`}
+        disabled={busy || isFirst} onClick={() => onMove(item, -1)}>
+        <Arrow up />
+      </button>
+      <button type="button" className="menu-owner__icon" aria-label={`Move ${item.name} down`}
+        disabled={busy || isLast} onClick={() => onMove(item, 1)}>
+        <Arrow />
+      </button>
+      <button type="button" className="menu-owner__edit" disabled={busy} onClick={() => onEdit(item)}>Edit</button>
+    </div>
+  )
+}
+
+function MenuItem({ item, children }) {
   const photo = menuPhotoUrl(item.photo_path)
   const classes = ['menu-item', item.sold_out && 'menu-item--sold-out', !item.on_today && 'menu-item--off-today']
   return (
     <li className={classes.filter(Boolean).join(' ')}>
-      {photo && <img className="menu-item__photo" src={photo} alt="" width="64" height="64" loading="lazy" />}
-      <div className="menu-item__body">
-        <div className="menu-item__top">
-          <h3 className="menu-item__name">{item.name}</h3>
-          <span className="menu-item__price">{formatPrice(item.price)}</span>
-        </div>
-        {(item.sold_out || !item.on_today) && (
-          <div className="menu-item__labels">
-            {item.sold_out && <span className="menu-item__label">Sold out</span>}
-            {!item.on_today && <span className="menu-item__label menu-item__label--owner">Not on today's menu</span>}
+      <div className="menu-item__main">
+        {photo && <img className="menu-item__photo" src={photo} alt="" width="64" height="64" loading="lazy" />}
+        <div className="menu-item__body">
+          <div className="menu-item__top">
+            <h3 className="menu-item__name">{item.name}</h3>
+            <span className="menu-item__price">{formatPrice(item.price)}</span>
           </div>
-        )}
-        {item.description && <p className="menu-item__description">{item.description}</p>}
-        {item.ingredients && <p className="menu-item__detail">{item.ingredients}</p>}
-        {item.allergens.length > 0 && (
-          <p className="menu-item__detail menu-item__allergens">Contains: {item.allergens.join(', ')}</p>
-        )}
+          {(item.sold_out || !item.on_today) && (
+            <div className="menu-item__labels">
+              {item.sold_out && <span className="menu-item__label">Sold out</span>}
+              {!item.on_today && <span className="menu-item__label menu-item__label--owner">Not on today's menu</span>}
+            </div>
+          )}
+          {item.description && <p className="menu-item__description">{item.description}</p>}
+          {item.ingredients && <p className="menu-item__detail">{item.ingredients}</p>}
+          {item.allergens.length > 0 && (
+            <p className="menu-item__detail menu-item__allergens">Contains: {item.allergens.join(', ')}</p>
+          )}
+        </div>
       </div>
+      {children}
     </li>
   )
 }
 
 export default function Menu() {
-  const { ready, session } = useAuth()
+  const { ready, session, isOwner } = useAuth()
   const [state, setState] = useState({ status: 'loading', items: [] })
+  const [editing, setEditing] = useState(null) // null | { item } | { category }
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState(null)
+
+  // Reload after an owner change. If the reload fails (say, a weak signal at the
+  // truck), keep showing the list already on screen.
+  const load = useCallback(async () => {
+    try {
+      setState({ status: 'ready', items: await fetchMenu() })
+    } catch {
+      setState((prev) => (prev.status === 'ready' ? prev : { status: 'error', items: [] }))
+    }
+  }, [])
 
   // Reload when an owner signs in or out: owners also see items that are off today.
   useEffect(() => {
@@ -49,28 +99,84 @@ export default function Menu() {
     return () => { cancelled = true }
   }, [ready, session])
 
+  const run = async (action) => {
+    setBusy(true)
+    setError(null)
+    try {
+      await action()
+    } catch (err) {
+      setError(err.message)
+    }
+    await load()
+    setBusy(false)
+  }
+
+  const onToggle = (item, patch) => run(() => updateMenuItem(item.id, patch))
+
+  const onMove = (item, step) => run(() => {
+    const list = state.items.filter((i) => i.category === item.category)
+    const from = list.findIndex((i) => i.id === item.id)
+    const reordered = [...list]
+    reordered.splice(from + step, 0, ...reordered.splice(from, 1))
+    return saveOrder(reordered)
+  })
+
+  const closeEditor = useCallback(() => setEditing(null), [])
+  const onSaved = useCallback(() => { setEditing(null); load() }, [load])
+
+  const nextSortOrder = (category) =>
+    Math.max(0, ...state.items.filter((i) => i.category === category).map((i) => i.sort_order)) + 10
+
+  const addButton = (category, label) => isOwner && (
+    <button type="button" className="menu__add" onClick={() => setEditing({ category })}>
+      + {label}
+    </button>
+  )
+
   return (
     <section className="menu">
       <h1>Menu</h1>
 
+      {error && <p className="menu__error" role="alert">{error}</p>}
       {state.status === 'loading' && <p className="placeholder">Loading the menu...</p>}
       {state.status === 'error' && <p className="placeholder">The menu is not available right now. Please try again soon.</p>}
       {state.status === 'ready' && state.items.length === 0 && (
-        <p className="placeholder">Today's menu is coming soon.</p>
+        <>
+          <p className="placeholder">Today's menu is coming soon.</p>
+          {addButton('bakery', 'Add the first item')}
+        </>
       )}
 
-      {state.status === 'ready' && SECTIONS.map(({ category, title }) => {
+      {state.status === 'ready' && state.items.length > 0 && SECTIONS.map(({ category, title }) => {
         const items = state.items.filter((item) => item.category === category)
-        if (items.length === 0) return null
+        if (items.length === 0 && !isOwner) return null
         return (
           <div key={category} className="menu__section">
             <h2 className="menu__section-title">{title}</h2>
             <ul className="menu__list">
-              {items.map((item) => <MenuItem key={item.id} item={item} />)}
+              {items.map((item, i) => (
+                <MenuItem key={item.id} item={item}>
+                  {isOwner && (
+                    <OwnerControls item={item} isFirst={i === 0} isLast={i === items.length - 1} busy={busy}
+                      onToggle={onToggle} onEdit={(it) => setEditing({ item: it })} onMove={onMove} />
+                  )}
+                </MenuItem>
+              ))}
             </ul>
+            {addButton(category, `Add ${title.toLowerCase()} item`)}
           </div>
         )
       })}
+
+      {editing && (
+        <MenuItemEditor
+          item={editing.item ?? null}
+          defaultCategory={editing.item?.category ?? editing.category}
+          nextSortOrder={nextSortOrder(editing.item?.category ?? editing.category)}
+          onClose={closeEditor}
+          onSaved={onSaved}
+        />
+      )}
     </section>
   )
 }
