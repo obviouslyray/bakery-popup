@@ -1,16 +1,11 @@
 // Passport stamps live on the phone (localStorage). There are no customer
 // accounts, so a QR code is how stamps move to a new phone.
 
-const STORAGE_KEY = 'passport-stamps'
+const STORAGE_KEY = 'passport-stamps-v2'
 
-// Until scanning the truck's QR code is built, a phone with no saved stamps
-// starts with these so the book and the transfer QR can be tried out.
-const STARTER_STAMPS = [
-  ['2026-11-02', 'Denver'], ['2026-11-03', 'Boulder'], ['2026-11-04', 'Golden'],
-  ['2026-11-05', 'Fort Collins'], ['2026-11-06', 'Lakewood'], ['2026-11-07', 'Arvada'],
-  ['2026-11-08', 'Longmont'], ['2026-11-09', 'Littleton'], ['2026-11-10', 'Castle Rock'],
-  ['2026-11-11', 'Louisville'], ['2026-11-12', 'Aurora'], ['2026-11-13', 'Englewood'],
-].map(([date, city]) => ({ date, city }))
+// The first version saved 12 sample stamps under this key on every phone that
+// opened Passport. They were never earned, so they are deleted on first load.
+const LEGACY_SAMPLE_KEY = 'passport-stamps'
 
 const sortByDate = (stamps) => [...stamps].sort((a, b) => a.date.localeCompare(b.date))
 const keyOf = (stamp) => `${stamp.date}|${stamp.city}`
@@ -18,20 +13,16 @@ const keyOf = (stamp) => `${stamp.date}|${stamp.city}`
 const isStamp = (s) =>
   s && typeof s.city === 'string' && s.city.trim() !== '' && /^\d{4}-\d{2}-\d{2}$/.test(s.date)
 
-// withStarters: on a phone that has never saved stamps, save and return the starter set.
-export function loadStamps({ withStarters = false } = {}) {
+export function loadStamps() {
   try {
+    localStorage.removeItem(LEGACY_SAMPLE_KEY)
     const raw = localStorage.getItem(STORAGE_KEY)
-    if (raw === null) {
-      if (!withStarters) return []
-      saveStamps(STARTER_STAMPS)
-      return STARTER_STAMPS
-    }
+    if (raw === null) return []
     const parsed = JSON.parse(raw)
     return Array.isArray(parsed) ? sortByDate(parsed.filter(isStamp)) : []
   } catch {
     // Storage blocked (private mode) or corrupted.
-    return withStarters ? STARTER_STAMPS : []
+    return []
   }
 }
 

@@ -13,7 +13,7 @@ const Arrow = ({ direction }) => (
 )
 
 export default function Passport() {
-  const [stamps] = useState(() => loadStamps({ withStarters: true }))
+  const [stamps] = useState(loadStamps)
   // Always at least one page; a new page opens once the last one is full.
   const pageCount = Math.max(1, Math.ceil(stamps.length / STAMPS_PER_PAGE))
   const [page, setPage] = useState(0)
