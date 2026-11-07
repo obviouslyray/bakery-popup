@@ -97,32 +97,3 @@ drop policy if exists "Owners delete menu photos" on storage.objects;
 create policy "Owners delete menu photos"
   on storage.objects for delete to authenticated
   using (bucket_id = 'menu-photos');
-
--- ---------------------------------------------------------------------------
--- Sample items for testing. Added only when the table is empty.
--- Lemon Poppyseed Loaf is off today's menu (customers should not see it);
--- Blueberry Muffin is sold out.
--- ---------------------------------------------------------------------------
-insert into public.menu_items
-  (name, description, price, category, ingredients, allergens, on_today, sold_out, sort_order)
-select * from (values
-  ('Butter Croissant', 'Flaky, golden, baked this morning.', 4.25, 'bakery',
-   'flour, butter, milk, eggs, sugar, yeast, salt', array['wheat', 'milk', 'eggs'], true, false, 10),
-  ('Green Chile Cheddar Scone', 'Pueblo green chile and sharp cheddar.', 4.75, 'bakery',
-   'flour, cheddar, green chile, butter, cream, eggs', array['wheat', 'milk', 'eggs'], true, false, 20),
-  ('Cinnamon Roll', 'Soft roll with cream cheese icing.', 5.00, 'bakery',
-   'flour, butter, sugar, cinnamon, cream cheese, eggs', array['wheat', 'milk', 'eggs'], true, false, 30),
-  ('Blueberry Muffin', 'Packed with blueberries, crumb top.', 3.75, 'bakery',
-   'flour, blueberries, sugar, butter, eggs, milk', array['wheat', 'milk', 'eggs'], true, true, 40),
-  ('Lemon Poppyseed Loaf', 'Bright lemon glaze.', 4.00, 'bakery',
-   'flour, lemon, poppy seeds, sugar, butter, eggs', array['wheat', 'milk', 'eggs'], false, false, 50),
-  ('Drip Coffee', 'Medium roast from a Colorado roaster.', 3.00, 'coffee',
-   'coffee, water', array[]::text[], true, false, 10),
-  ('Latte', 'Double shot with steamed milk.', 4.75, 'coffee',
-   'espresso, milk', array['milk'], true, false, 20),
-  ('Honey Lavender Latte', 'Local honey and a hint of lavender.', 5.50, 'coffee',
-   'espresso, milk, honey, lavender', array['milk'], true, false, 30),
-  ('Cold Brew', 'Steeped overnight, smooth and strong.', 4.50, 'coffee',
-   'coffee, water', array[]::text[], true, false, 40)
-) as sample(name, description, price, category, ingredients, allergens, on_today, sold_out, sort_order)
-where not exists (select 1 from public.menu_items);
