@@ -1,9 +1,11 @@
-import { useRef } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { useCallback, useRef, useState } from 'react'
+import { NavLink } from 'react-router-dom'
+import OwnerLock from './OwnerLock.jsx'
 import './TabBar.css'
 
 // Hidden owner shortcut: tapping the Passport tab 5 times within 3 seconds
-// opens the owner login. The installed app has no address bar to type /owner.
+// shows a lock bubble that opens the owner login popup. The installed app has
+// no address bar to type /owner.
 const SECRET_TAB = '/passport'
 const SECRET_TAPS = 5
 const SECRET_WINDOW_MS = 3000
@@ -39,28 +41,31 @@ const TABS = [
 ]
 
 export default function TabBar() {
-  const navigate = useNavigate()
   const taps = useRef([])
+  const [showLock, setShowLock] = useState(false)
+  const closeLock = useCallback(() => setShowLock(false), [])
 
-  const onSecretTap = (e) => {
+  const onSecretTap = () => {
     const now = Date.now()
     taps.current = [...taps.current, now].filter((t) => now - t < SECRET_WINDOW_MS)
     if (taps.current.length >= SECRET_TAPS) {
       taps.current = []
-      e.preventDefault()
-      navigate('/owner')
+      setShowLock(true)
     }
   }
 
   return (
-    <nav className="tab-bar" aria-label="Main">
-      {TABS.map((tab) => (
-        <NavLink key={tab.to} to={tab.to} end className="tab-bar__link"
-          onClick={tab.to === SECRET_TAB ? onSecretTap : undefined}>
-          {tab.icon}
-          <span>{tab.label}</span>
-        </NavLink>
-      ))}
-    </nav>
+    <>
+      <nav className="tab-bar" aria-label="Main">
+        {TABS.map((tab) => (
+          <NavLink key={tab.to} to={tab.to} end className="tab-bar__link"
+            onClick={tab.to === SECRET_TAB ? onSecretTap : undefined}>
+            {tab.icon}
+            <span>{tab.label}</span>
+          </NavLink>
+        ))}
+      </nav>
+      {showLock && <OwnerLock onClose={closeLock} />}
+    </>
   )
 }
