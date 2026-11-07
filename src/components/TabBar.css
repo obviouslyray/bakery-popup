@@ -25,6 +25,7 @@
   color: var(--color-muted);
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation; /* quick repeat taps do not zoom on iPhone */
 }
 
 .tab-bar__link.active {
