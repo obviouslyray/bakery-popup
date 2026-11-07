@@ -3,12 +3,11 @@ import OwnerOnly from './OwnerOnly.jsx'
 import { signOut } from '../lib/supabase.js'
 import './OwnerBar.css'
 
-// The owner tools for each screen. They are placeholders until the matching
-// features (shifts, schedule, menu tables) are built.
+// Placeholder owner tools for screens whose features are not built yet
+// (shifts, schedule). The Menu screen has its own inline owner controls.
 const TOOLS = {
   '/': ['Open the truck'],
   '/calendar': ['Edit the 7-day schedule'],
-  '/menu': ['Edit the menu', 'Mark items sold out'],
 }
 
 export default function OwnerBar() {
