@@ -4,30 +4,40 @@ import { detectPlatform, isRunningInstalled, promptInstall, useInstallPrompt } f
 import './Install.css'
 
 // Landing page for the "Share the app" QR code.
-// Android: one-tap Install button. iPhone: Share > Add to Home Screen steps.
+// Android: one-tap Install button. iPhone: page menu > Share > Add to Home Screen steps.
 
-const ShareIcon = () => (
-  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor"
-    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="install__inline-icon">
-    <path d="M12 3v12M8 7l4-4 4 4" /><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1" />
-  </svg>
-)
-
-const AddIcon = () => (
-  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor"
-    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="install__inline-icon">
-    <rect x="4" y="4" width="16" height="16" rx="3" /><path d="M12 8v8M8 12h8" />
-  </svg>
-)
+// Simple drawing of Safari's address bar with the page-menu button at its left
+// end circled. The button's icon varies by phone (it can be a puzzle piece), so
+// it is drawn as a blank key instead of a specific symbol.
+function AddressBarDrawing() {
+  return (
+    <div className="address-bar" role="img"
+      aria-label="Drawing of the Safari address bar, with the button at its left end circled">
+      <span className="address-bar__button">
+        <span className="address-bar__ring" />
+      </span>
+      <span className="address-bar__url">obviouslyray.github.io</span>
+      <span className="address-bar__arrow">Tap here</span>
+    </div>
+  )
+}
 
 function IosSteps() {
   return (
-    <ol className="install__steps">
-      <li>Open this page in <strong>Safari</strong>.</li>
-      <li>Tap the Share button <ShareIcon /> at the bottom of the screen.</li>
-      <li>Scroll down and tap <strong>Add to Home Screen</strong> <AddIcon />.</li>
-      <li>Tap <strong>Add</strong> in the top right corner.</li>
-    </ol>
+    <>
+      <ol className="install__steps">
+        <li>Open this page in <strong>Safari</strong>.</li>
+        <li>
+          Tap the button on the <strong>left side of the address bar</strong>.
+          <AddressBarDrawing />
+        </li>
+        <li>Tap <strong>Share</strong>, then <strong>View More</strong>.</li>
+        <li>Tap <strong>Add to Home Screen</strong>, then <strong>Add</strong>.</li>
+      </ol>
+      <p className="install__note">
+        On older iPhones, tap the Share button in the toolbar at the bottom of Safari, then Add to Home Screen.
+      </p>
+    </>
   )
 }
 

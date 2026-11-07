@@ -37,22 +37,124 @@
   color: var(--color-primary);
 }
 
+/* Steps: large, high-contrast text. Nothing in here is blue or underlined, so
+   nothing looks tappable. */
 .install__steps {
   margin: 0;
-  padding: 16px 16px 16px 40px;
+  padding: 18px 18px 18px 44px;
   border-radius: 12px;
   background: var(--color-surface);
   text-align: left;
+  font-size: 1.125rem;
+  line-height: 1.45;
+  color: #1f140b;
   box-shadow: 0 4px 12px rgb(60 40 20 / 0.12);
 }
 
-.install__steps li + li {
-  margin-top: 10px;
+.install__steps li {
+  padding-left: 4px;
 }
 
-.install__inline-icon {
-  vertical-align: -3px;
-  color: #1a73e8;
+.install__steps li + li {
+  margin-top: 14px;
+}
+
+.install__steps li::marker {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.install__steps strong {
+  font-weight: 700;
+}
+
+/* If a step ever needs an icon: dark gray inside a light-gray key, so it reads
+   as a picture of a button rather than a link. */
+.install__key {
+  display: inline-grid;
+  place-items: center;
+  min-width: 28px;
+  height: 26px;
+  padding: 0 4px;
+  border: 1px solid #c9c9ce;
+  border-radius: 7px;
+  background: #ececef;
+  color: #3a3a3c;
+  vertical-align: middle;
+}
+
+.install__note {
+  margin: 14px 4px 0;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: #4a3b2e;
+  text-align: left;
+}
+
+/* Drawing of Safari's address bar for step 2. */
+.address-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  margin: 12px 0 30px;
+  padding: 0 12px 0 8px;
+  border-radius: 14px;
+  background: #e9e9ec;
+  box-shadow: inset 0 0 0 1px #d6d6db;
+}
+
+.address-bar__button {
+  position: relative;
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #c9c9ce;
+  border-radius: 8px;
+  background: #d9d9de;
+}
+
+.address-bar__ring {
+  position: absolute;
+  inset: -8px;
+  border: 3px solid #d9822b;
+  border-radius: 50%;
+}
+
+.address-bar__url {
+  flex: 1;
+  overflow: hidden;
+  font-size: 0.95rem;
+  color: #3a3a3c;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* "Tap here" label under the left end, with a triangle pointing up at the ring. */
+.address-bar__arrow {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #d9822b;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.address-bar__arrow::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 17px;
+  border: 5px solid transparent;
+  border-top: 0;
+  border-bottom-color: #d9822b;
 }
 
 .install__skip {
