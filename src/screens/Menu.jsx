@@ -164,27 +164,21 @@ export default function Menu() {
     </ul>
   )
 
-  // Beverages folder: items grouped under section headers. Customers do not see
-  // empty sections (except Seasonal's "coming soon" line) or items with no section.
+  // Beverages folder: all four section headers always show, each with its items
+  // or a short "coming soon" line. Items with no section are hidden from customers.
   const beverageSections = () => {
     const groups = BEVERAGE_SECTIONS.map((s) => ({ ...s, items: folderItems.filter((i) => i.section === s.key) }))
     const unsectioned = folderItems.filter((i) => !BEVERAGE_SECTIONS.some((s) => s.key === i.section))
-    if (!isOwner && groups.every((g) => g.items.length === 0)) {
-      return <p className="placeholder folders__empty">Beverages coming soon.</p>
-    }
     return (
       <>
-        {groups.map((g) => {
-          if (g.items.length === 0 && !isOwner && !g.emptyText) return null
-          return (
-            <section key={g.key} className="menu-group" aria-labelledby={`menu-group-${g.key}`}>
-              <h2 id={`menu-group-${g.key}`} className="menu-group__title">{g.title}</h2>
-              {g.items.length > 0
-                ? itemList(g.items)
-                : <p className="menu-group__empty">{g.emptyText ?? 'None yet.'}</p>}
-            </section>
-          )
-        })}
+        {groups.map((g) => (
+          <section key={g.key} className="menu-group" aria-labelledby={`menu-group-${g.key}`}>
+            <h2 id={`menu-group-${g.key}`} className="menu-group__title">{g.title}</h2>
+            {g.items.length > 0
+              ? itemList(g.items)
+              : <p className="menu-group__empty">{g.emptyText ?? 'Coming soon.'}</p>}
+          </section>
+        ))}
         {isOwner && unsectioned.length > 0 && (
           <section className="menu-group menu-group--hidden" aria-labelledby="menu-group-none">
             <h2 id="menu-group-none" className="menu-group__title">Not in a section</h2>
