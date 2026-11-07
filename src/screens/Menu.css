@@ -1,14 +1,96 @@
-.menu__section {
-  margin-top: 20px;
+/* Folder tabs: Bakery and Coffee look like tabs on manila file folders. */
+.folders {
+  --manila: #f2e0b8;
+  --manila-deep: #e8d2a2;
+  --kraft: #cfae7c;
+  --kraft-text: #6b4c2f;
+  margin-top: 18px;
 }
 
-.menu__section-title {
-  margin: 0 0 10px;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 0.85rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--color-muted);
+.folders__tabs {
+  display: flex;
+  padding-left: 2px;
+}
+
+.folder-tab {
+  position: relative;
+  z-index: 1;
+  min-width: 132px;
+  margin-right: -16px; /* tabs overlap a little */
+  padding: 12px 30px 12px 20px;
+  border: 0;
+  border-radius: 12px 12px 0 0;
+  background: var(--kraft);
+  font: inherit;
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--kraft-text);
+  text-align: left;
+  cursor: pointer;
+  /* Behind: a little lower, so the panel covers its bottom edge. */
+  transform: translateY(6px);
+  transition: transform 200ms ease, background-color 200ms ease, color 200ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Slanted right edge, like a real folder tab. */
+.folder-tab::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -14px;
+  bottom: 0;
+  width: 28px;
+  border-top-right-radius: 12px;
+  background: inherit;
+  transform: skewX(20deg);
+  transform-origin: bottom left;
+  z-index: -1;
+}
+
+/* In front: same color as the panel, no line between them. */
+.folder-tab--selected {
+  z-index: 3;
+  background: var(--manila);
+  color: var(--color-primary);
+  transform: none;
+  box-shadow: 0 -3px 8px rgb(60 40 20 / 0.12);
+}
+
+.folder-tab:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: -5px;
+}
+
+.folders__panel {
+  position: relative;
+  z-index: 2;
+  min-height: 160px;
+  padding: 18px 12px 14px;
+  border-radius: 0 14px 14px 14px;
+  background: linear-gradient(180deg, var(--manila) 0%, var(--manila-deep) 100%);
+  box-shadow: 0 8px 18px rgb(60 40 20 / 0.18);
+  animation: folder-in 200ms ease-out;
+}
+
+.folders__empty {
+  padding: 8px 4px;
+  font-size: 1.05rem;
+  color: var(--kraft-text);
+}
+
+@keyframes folder-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .folder-tab,
+  .folders__panel {
+    transition: none;
+    animation: none;
+  }
 }
 
 .menu__list {

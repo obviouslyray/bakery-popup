@@ -78,6 +78,7 @@ export default function Menu() {
   const [editing, setEditing] = useState(null) // null | { item } | { category }
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState(null)
+  const [folder, setFolder] = useState('bakery')
 
   // Reload after an owner change. If the reload fails (say, a weak signal at the
   // truck), keep showing the list already on screen.
@@ -133,40 +134,68 @@ export default function Menu() {
     </button>
   )
 
+  // Folder tabs: arrow keys move between them, like any tab list.
+  const onTabKey = (e) => {
+    const i = SECTIONS.findIndex((s) => s.category === folder)
+    const next = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: SECTIONS.length - 1 }[e.key]
+    if (next === undefined) return
+    e.preventDefault()
+    const target = SECTIONS[(next + SECTIONS.length) % SECTIONS.length].category
+    setFolder(target)
+    document.getElementById(`folder-tab-${target}`)?.focus()
+  }
+
+  const current = SECTIONS.find((s) => s.category === folder)
+  const folderItems = state.items.filter((item) => item.category === folder)
+
   return (
     <section className="menu">
       <h1>Menu</h1>
 
       {error && <p className="menu__error" role="alert">{error}</p>}
-      {state.status === 'loading' && <p className="placeholder">Loading the menu...</p>}
-      {state.status === 'error' && <p className="placeholder">The menu is not available right now. Please try again soon.</p>}
-      {state.status === 'ready' && state.items.length === 0 && (
-        <>
-          <p className="placeholder">Today's menu is coming soon.</p>
-          {addButton('bakery', 'Add the first item')}
-        </>
-      )}
 
-      {state.status === 'ready' && state.items.length > 0 && SECTIONS.map(({ category, title }) => {
-        const items = state.items.filter((item) => item.category === category)
-        if (items.length === 0 && !isOwner) return null
-        return (
-          <div key={category} className="menu__section">
-            <h2 className="menu__section-title">{title}</h2>
+      <div className="folders">
+        <div className="folders__tabs" role="tablist" aria-label="Menu sections">
+          {SECTIONS.map(({ category, title }) => {
+            const selected = category === folder
+            return (
+              <button key={category} id={`folder-tab-${category}`} type="button" role="tab"
+                className={`folder-tab ${selected ? 'folder-tab--selected' : ''}`}
+                aria-selected={selected} aria-controls="folder-panel" tabIndex={selected ? 0 : -1}
+                onClick={() => setFolder(category)} onKeyDown={onTabKey}>
+                {title}
+              </button>
+            )
+          })}
+        </div>
+
+        {/* key restarts the fade-in each time a folder comes to the front */}
+        <div key={folder} id="folder-panel" className="folders__panel" role="tabpanel"
+          aria-labelledby={`folder-tab-${folder}`}>
+          {state.status === 'loading' && <p className="placeholder">Loading the menu...</p>}
+          {state.status === 'error' && (
+            <p className="placeholder">The menu is not available right now. Please try again soon.</p>
+          )}
+          {state.status === 'ready' && folderItems.length === 0 && (
+            <p className="placeholder folders__empty">
+              {isOwner ? `No ${current.title.toLowerCase()} items yet.` : `${current.title} items coming soon.`}
+            </p>
+          )}
+          {state.status === 'ready' && folderItems.length > 0 && (
             <ul className="menu__list">
-              {items.map((item, i) => (
+              {folderItems.map((item, i) => (
                 <MenuItem key={item.id} item={item}>
                   {isOwner && (
-                    <OwnerControls item={item} isFirst={i === 0} isLast={i === items.length - 1} busy={busy}
+                    <OwnerControls item={item} isFirst={i === 0} isLast={i === folderItems.length - 1} busy={busy}
                       onToggle={onToggle} onEdit={(it) => setEditing({ item: it })} onMove={onMove} />
                   )}
                 </MenuItem>
               ))}
             </ul>
-            {addButton(category, `Add ${title.toLowerCase()} item`)}
-          </div>
-        )
-      })}
+          )}
+          {state.status === 'ready' && addButton(folder, `Add ${current.title.toLowerCase()} item`)}
+        </div>
+      </div>
 
       {editing && (
         <MenuItemEditor
