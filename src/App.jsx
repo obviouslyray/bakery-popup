@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import PhoneFrame from './components/PhoneFrame.jsx'
 import TabBar from './components/TabBar.jsx'
+import OwnerBar from './components/OwnerBar.jsx'
 import Home from './screens/Home.jsx'
 import Calendar from './screens/Calendar.jsx'
 import Location from './screens/Location.jsx'
@@ -21,6 +22,7 @@ export default function App() {
   return (
     <PhoneFrame>
       <main className={showTabs ? 'screen screen--with-tabs' : 'screen'}>
+        {showTabs && <OwnerBar />}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/calendar" element={<Calendar />} />

@@ -1,0 +1,64 @@
+.owner-bar {
+  margin-bottom: 20px;
+  padding: 12px;
+  border: 2px dashed var(--color-accent);
+  border-radius: 12px;
+  background: rgb(255 250 243 / 0.9);
+}
+
+.owner-bar__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.owner-bar__label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.owner-bar__signout {
+  padding: 4px 8px;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.owner-bar__tools {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.owner-bar__tool {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--color-primary);
+  color: var(--color-surface);
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+}
+
+.owner-bar__tool:disabled {
+  opacity: 0.6;
+}
+
+.owner-bar__soon {
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
