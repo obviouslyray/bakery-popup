@@ -346,8 +346,9 @@
 }
 
 .menu-owner__icon--delete {
-  border-color: #e3b9b4;
-  color: #b23a32;
+  border-color: transparent;
+  background: none;
+  color: #c62828;
 }
 
 .menu-owner__confirm-text {
