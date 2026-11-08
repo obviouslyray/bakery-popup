@@ -21,20 +21,8 @@ const Arrow = ({ up }) => (
   </svg>
 )
 
-// Owner-only controls under an item: quick switches, move up/down, edit and delete.
-function OwnerControls({ item, isFirst, isLast, busy, onToggle, onEdit, onMove, onDelete }) {
-  const [confirming, setConfirming] = useState(false)
-
-  if (confirming) {
-    return (
-      <div className="menu-owner menu-owner--confirm">
-        <p className="menu-owner__confirm-text">Delete {item.name}? This can't be undone.</p>
-        <button type="button" className="menu-owner__delete-yes" disabled={busy} onClick={() => onDelete(item)}>Delete</button>
-        <button type="button" className="menu-owner__toggle" disabled={busy} onClick={() => setConfirming(false)}>Keep</button>
-      </div>
-    )
-  }
-
+// Owner-only controls under an item: quick switches, move up/down and edit.
+function OwnerControls({ item, isFirst, isLast, busy, onToggle, onEdit, onMove }) {
   return (
     <div className="menu-owner">
       <button type="button" className="menu-owner__toggle" aria-pressed={item.sold_out} disabled={busy}
@@ -55,20 +43,17 @@ function OwnerControls({ item, isFirst, isLast, busy, onToggle, onEdit, onMove, 
         <Arrow />
       </button>
       <button type="button" className="menu-owner__edit" disabled={busy} onClick={() => onEdit(item)}>Edit</button>
-      <button type="button" className="menu-owner__icon menu-owner__icon--delete" aria-label={`Delete ${item.name}`}
-        disabled={busy} onClick={() => setConfirming(true)}>
-        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor"
-          strokeWidth="3" strokeLinecap="round">
-          <path d="M6 6l12 12M18 6L6 18" />
-        </svg>
-      </button>
     </div>
   )
 }
 
-function MenuItem({ item, children }) {
+// `owner` holds the owner controls' props; it is null for customers.
+function MenuItem({ item, owner }) {
+  const [confirming, setConfirming] = useState(false)
   const photo = menuPhotoUrl(item.photo_path)
-  const classes = ['menu-item', item.sold_out && 'menu-item--sold-out', !item.on_today && 'menu-item--off-today']
+  const classes = [
+    'menu-item', owner && 'menu-item--owner', item.sold_out && 'menu-item--sold-out', !item.on_today && 'menu-item--off-today',
+  ]
   return (
     <li className={classes.filter(Boolean).join(' ')}>
       <div className="menu-item__main">
@@ -76,7 +61,18 @@ function MenuItem({ item, children }) {
         <div className="menu-item__body">
           <div className="menu-item__top">
             <h3 className="menu-item__name">{item.name}</h3>
-            <span className="menu-item__price">{isAddOn(item) ? '+' : ''}{formatPrice(item.price)}</span>
+            <div className="menu-item__price-column">
+              {owner && (
+                <button type="button" className="menu-item__delete" aria-label={`Delete ${item.name}`}
+                  disabled={owner.busy || confirming} onClick={() => setConfirming(true)}>
+                  <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor"
+                    strokeWidth="3" strokeLinecap="round">
+                    <path d="M6 6l12 12M18 6L6 18" />
+                  </svg>
+                </button>
+              )}
+              <span className="menu-item__price">{isAddOn(item) ? '+' : ''}{formatPrice(item.price)}</span>
+            </div>
           </div>
           {(item.sold_out || !item.on_today) && (
             <div className="menu-item__labels">
@@ -91,7 +87,15 @@ function MenuItem({ item, children }) {
           )}
         </div>
       </div>
-      {children}
+      {owner && (confirming ? (
+        <div className="menu-owner menu-owner--confirm">
+          <p className="menu-owner__confirm-text">Delete {item.name}? This can't be undone.</p>
+          <button type="button" className="menu-owner__delete-yes" disabled={owner.busy}
+            onClick={() => owner.onDelete(item)}>Delete</button>
+          <button type="button" className="menu-owner__toggle" disabled={owner.busy}
+            onClick={() => setConfirming(false)}>Keep</button>
+        </div>
+      ) : <OwnerControls item={item} {...owner} />)}
     </li>
   )
 }
@@ -179,12 +183,9 @@ export default function Menu() {
   const itemList = (items) => (
     <ul className="menu__list">
       {items.map((item, i) => (
-        <MenuItem key={item.id} item={item}>
-          {isOwner && (
-            <OwnerControls item={item} isFirst={i === 0} isLast={i === items.length - 1} busy={busy}
-              onToggle={onToggle} onEdit={(it) => setEditing({ item: it })} onMove={onMove} onDelete={onDelete} />
-          )}
-        </MenuItem>
+        <MenuItem key={item.id} item={item} owner={isOwner ? {
+          isFirst: i === 0, isLast: i === items.length - 1, busy, onToggle, onEdit: (it) => setEditing({ item: it }), onMove, onDelete,
+        } : null} />
       ))}
     </ul>
   )

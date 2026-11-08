@@ -145,8 +145,18 @@
   color: var(--color-text);
 }
 
-.menu-item__price {
+.menu-item__price-column {
+  display: flex;
   flex: none;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.menu-item--owner .menu-item__top {
+  align-items: flex-start;
+}
+
+.menu-item__price {
   font-weight: 700;
   color: var(--color-primary);
 }
@@ -345,10 +355,29 @@
   margin-bottom: 10px;
 }
 
-.menu-owner__icon--delete {
-  border-color: transparent;
+/* Owner's delete X: top right of the card, above the price. Negative margins
+   line the X up with the price while keeping a finger-sized tap area. */
+.menu-item__delete {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin: -8px -8px -4px 0;
+  padding: 0;
+  border: 0;
   background: none;
   color: #c62828;
+  cursor: pointer;
+}
+
+.menu-item__delete:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.menu-item__delete:focus-visible {
+  outline: 2px solid var(--color-accent);
+  border-radius: 8px;
 }
 
 .menu-owner__confirm-text {
