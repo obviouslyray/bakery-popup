@@ -238,6 +238,7 @@
 /* Owner controls inside an item card. */
 .menu-owner {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 6px;
   margin-top: 12px;
@@ -342,4 +343,33 @@
 
 .menu-group--hidden .menu-group__empty {
   margin-bottom: 10px;
+}
+
+.menu-owner__icon--delete {
+  border-color: #e3b9b4;
+  color: #b23a32;
+}
+
+.menu-owner__confirm-text {
+  flex: 1 1 100%;
+  margin: 0 0 4px;
+  font-weight: 600;
+  color: #b23a32;
+}
+
+.menu-owner__delete-yes {
+  padding: 6px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: #b23a32;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+}
+
+.menu-owner__delete-yes:disabled {
+  opacity: 0.6;
+  cursor: default;
 }
