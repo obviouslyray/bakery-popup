@@ -46,38 +46,43 @@
   color: var(--color-primary);
 }
 
-.passport__grid {
-  list-style: none;
+/* The blank page area. Fixed proportions, so stamp positions hold on any phone. */
+.passport__field {
+  position: relative;
+  aspect-ratio: 308 / 397;
+}
+
+.passport__stamps {
+  position: absolute;
+  inset: 0;
   margin: 0;
   padding: 0;
-  display: grid;
-  /* Ten spots in staggered rows of 3 and 2: each spot spans two of six columns. */
-  grid-template-columns: repeat(6, 1fr);
-  column-gap: 12px;
-  row-gap: 6px;
+  list-style: none;
 }
 
-.passport__slot {
-  grid-column: span 2;
-  aspect-ratio: 1;
+/* left/top (set inline) are the stamp's center. Centered with margins, because a
+   transform here would stop the stamp's ink from multiplying onto the paper. */
+.passport__spot {
+  position: absolute;
   display: grid;
   place-items: center;
-  border: 1.5px dashed rgb(90 58 34 / 0.32);
-  border-radius: 50%;
+  width: 30%;
+  aspect-ratio: 1;
+  margin: -15% 0 0 -15%;
 }
 
-.passport__slot:nth-child(5n + 4) {
-  grid-column: 2 / span 2;
-}
-
-.passport__slot:nth-child(5n + 5) {
-  grid-column: 4 / span 2;
-}
-
-.passport__empty {
-  font-family: Georgia, serif;
-  font-size: 0.8rem;
-  color: rgb(90 58 34 / 0.42);
+.passport__blank {
+  position: absolute;
+  inset: 0;
+  width: 72%;
+  height: fit-content;
+  margin: auto;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1rem;
+  font-style: italic;
+  line-height: 1.45;
+  text-align: center;
+  color: rgb(90 58 34 / 0.6);
 }
 
 .stamp {

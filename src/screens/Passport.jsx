@@ -5,6 +5,16 @@ import './Passport.css'
 
 const STAMPS_PER_PAGE = 10
 
+// Where each of a page's 10 stamps lands, as the center point in % of the page
+// area. Fixed, so a stamp is in the same place every time; every other page is
+// mirrored so the pages don't look alike.
+const STAMP_SPOTS = [
+  [16, 12], [54, 12], [84, 13],
+  [27, 37], [72, 41],
+  [15, 62], [46, 66], [84, 60],
+  [31, 87], [73, 85],
+]
+
 const Arrow = ({ direction }) => (
   <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor"
     strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round">
@@ -22,7 +32,6 @@ export default function Passport() {
 
   const first = page * STAMPS_PER_PAGE
   const pageStamps = stamps.slice(first, first + STAMPS_PER_PAGE)
-  const slots = Array.from({ length: STAMPS_PER_PAGE }, (_, i) => pageStamps[i] ?? null)
   const pageFull = pageStamps.length === STAMPS_PER_PAGE
   const hasNext = pageFull && page < pageCount - 1
 
@@ -35,27 +44,28 @@ export default function Passport() {
           <p className="passport__subtitle">Visas &middot; Stamps</p>
         </header>
 
-        <ol className="passport__grid">
-          {slots.map((stamp, i) => {
-            if (!stamp) {
-              return (
-                <li key={i} className="passport__slot">
-                  <span className="passport__empty">{String(first + i + 1).padStart(2, '0')}</span>
-                </li>
-              )
-            }
-            const { ink, tilt } = stampStyle(first + i)
-            return (
-              <li key={i} className="passport__slot">
-                <div className={`stamp stamp--${ink}`} style={{ '--tilt': `${tilt}deg` }}>
-                  <span className="stamp__city">{stamp.city}</span>
-                  <span className="stamp__date">{formatStampDate(stamp.date)}</span>
-                  <span className="stamp__hours">6 &ndash; 11</span>
-                </div>
-              </li>
-            )
-          })}
-        </ol>
+        <div className="passport__field">
+          {pageStamps.length === 0 ? (
+            <p className="passport__blank">Catch the truck and scan its code to collect your first stamp.</p>
+          ) : (
+            <ol className="passport__stamps">
+              {pageStamps.map((stamp, i) => {
+                const { ink, tilt } = stampStyle(first + i)
+                const [x, y] = STAMP_SPOTS[i]
+                return (
+                  <li key={i} className="passport__spot"
+                    style={{ left: `${page % 2 ? 100 - x : x}%`, top: `${y}%` }}>
+                    <div className={`stamp stamp--${ink}`} style={{ '--tilt': `${tilt}deg` }}>
+                      <span className="stamp__city">{stamp.city}</span>
+                      <span className="stamp__date">{formatStampDate(stamp.date)}</span>
+                      <span className="stamp__hours">6 &ndash; 11</span>
+                    </div>
+                  </li>
+                )
+              })}
+            </ol>
+          )}
+        </div>
 
         <footer className="passport__footer">
           {page > 0 ? (

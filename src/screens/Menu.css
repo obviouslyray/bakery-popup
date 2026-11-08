@@ -1,15 +1,30 @@
-/* Folder tabs: Bakery and Coffee look like tabs on manila file folders. */
+/* Folder tabs: Bakery and Beverages look like divider tabs in a binder. */
 .folders {
   --manila: #f2e0b8;
-  --manila-deep: #e8d2a2;
   --kraft: #cfae7c;
   --kraft-text: #6b4c2f;
+  --page-join: #f4ebdf; /* the page background just below the tabs */
   margin-top: 18px;
 }
 
 .folders__tabs {
+  position: relative;
   display: flex;
+  align-items: flex-end;
   padding-left: 2px;
+}
+
+/* The binder line: edge to edge across the screen (undoes .screen's 20px padding).
+   It sits over the unselected tab's base and under the selected tab. */
+.folders__tabs::after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  right: -20px;
+  bottom: 0;
+  left: -20px;
+  height: 2px;
+  background: var(--kraft);
 }
 
 .folder-tab {
@@ -17,7 +32,8 @@
   z-index: 1;
   min-width: 132px;
   margin-right: -16px; /* tabs overlap a little */
-  padding: 12px 30px 12px 20px;
+  /* Behind: darker and a little shorter, with its base on the binder line. */
+  padding: 6px 30px 12px 20px;
   border: 0;
   border-radius: 12px 12px 0 0;
   background: var(--kraft);
@@ -28,9 +44,7 @@
   color: var(--kraft-text);
   text-align: left;
   cursor: pointer;
-  /* Behind: a little lower, so the panel covers its bottom edge. */
-  transform: translateY(6px);
-  transition: transform 200ms ease, background-color 200ms ease, color 200ms ease;
+  transition: padding-top 200ms ease, color 200ms ease;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -49,13 +63,12 @@
   z-index: -1;
 }
 
-/* In front: same color as the panel, no line between them. */
+/* In front: covers the binder line and fades from manila into the page below. */
 .folder-tab--selected {
   z-index: 3;
-  background: var(--manila);
+  padding-top: 12px;
+  background: linear-gradient(180deg, var(--manila) 0%, var(--manila) 45%, var(--page-join) 100%);
   color: var(--color-primary);
-  transform: none;
-  box-shadow: 0 -3px 8px rgb(60 40 20 / 0.12);
 }
 
 .folder-tab:focus-visible {
@@ -63,14 +76,10 @@
   outline-offset: -5px;
 }
 
+/* Menu content flows on the page itself, 12px from the screen edges. */
 .folders__panel {
-  position: relative;
-  z-index: 2;
-  min-height: 160px;
-  padding: 18px 12px 14px;
-  border-radius: 0 14px 14px 14px;
-  background: linear-gradient(180deg, var(--manila) 0%, var(--manila-deep) 100%);
-  box-shadow: 0 8px 18px rgb(60 40 20 / 0.18);
+  margin: 0 -8px;
+  padding-top: 16px;
   animation: folder-in 200ms ease-out;
 }
 
