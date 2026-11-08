@@ -152,7 +152,8 @@
 
 .editor__switches {
   display: grid;
-  gap: 10px;
+  grid-template-columns: 2fr 3fr;
+  gap: 8px;
   margin-bottom: 16px;
 }
 
@@ -160,8 +161,17 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  padding: 11px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: #fff;
   font-weight: 600;
   color: var(--color-text);
+  cursor: pointer;
+}
+
+.editor__switch:has(input:checked) {
+  border-color: var(--color-primary);
 }
 
 .editor__switch input {

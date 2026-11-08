@@ -109,6 +109,18 @@ export default function MenuItemEditor({ item, defaultCategory, nextSortOrder, o
         onClick={(e) => e.stopPropagation()} onSubmit={onSave} noValidate>
         <h2 id="editor-title" className="editor__title">{isNew ? 'Add a menu item' : 'Edit menu item'}</h2>
 
+        {/* First in the sheet: these change most often during service. */}
+        <div className="editor__switches">
+          <label className="editor__switch">
+            <input type="checkbox" checked={form.soldOut} onChange={(e) => setForm({ ...form, soldOut: e.target.checked })} />
+            Sold out
+          </label>
+          <label className="editor__switch">
+            <input type="checkbox" checked={form.onToday} onChange={(e) => setForm({ ...form, onToday: e.target.checked })} />
+            On today's menu
+          </label>
+        </div>
+
         <label className="editor__field">
           Name
           <input value={form.name} onChange={set('name')} required maxLength={80} autoFocus={isNew} />
@@ -191,18 +203,7 @@ export default function MenuItemEditor({ item, defaultCategory, nextSortOrder, o
           </div>
         </div>
 
-        <div className="editor__switches">
-          <label className="editor__switch">
-            <input type="checkbox" checked={form.onToday} onChange={(e) => setForm({ ...form, onToday: e.target.checked })} />
-            On today's menu
-          </label>
-          <label className="editor__switch">
-            <input type="checkbox" checked={form.soldOut} onChange={(e) => setForm({ ...form, soldOut: e.target.checked })} />
-            Sold out
-          </label>
-        </div>
-
-        {error && <p className="editor__error" role="alert">{error}</p>}
+        {error &&<p className="editor__error" role="alert">{error}</p>}
 
         {confirmDelete ? (
           <div className="editor__confirm">
