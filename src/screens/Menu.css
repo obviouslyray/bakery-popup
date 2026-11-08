@@ -111,6 +111,7 @@
 }
 
 .menu-item {
+  position: relative;
   display: flex;
   gap: 12px;
   padding: 14px;
@@ -145,18 +146,8 @@
   color: var(--color-text);
 }
 
-.menu-item__price-column {
-  display: flex;
-  flex: none;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-.menu-item--owner .menu-item__top {
-  align-items: flex-start;
-}
-
 .menu-item__price {
+  flex: none;
   font-weight: 700;
   color: var(--color-primary);
 }
@@ -355,15 +346,17 @@
   margin-bottom: 10px;
 }
 
-/* Owner's delete X: top right of the card, above the price. Negative margins
-   line the X up with the price while keeping a finger-sized tap area. */
+/* Owner's delete X: a small close-window X in the card's corner, taking no
+   layout space. The invisible button around it keeps a finger-sized tap area. */
 .menu-item__delete {
+  position: absolute;
+  top: 0;
+  right: 0;
   display: grid;
-  place-items: center;
+  place-items: start end;
   width: 32px;
-  height: 32px;
-  margin: -8px -8px -4px 0;
-  padding: 0;
+  height: 28px;
+  padding: 3px 4px 0 0;
   border: 0;
   background: none;
   color: #c62828;
