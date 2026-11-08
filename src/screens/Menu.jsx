@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useState } from 'react'
 import MenuItemEditor from '../components/MenuItemEditor.jsx'
 import { useAuth } from '../lib/auth.jsx'
-import { BEVERAGE_SECTIONS, fetchMenu, formatPrice, menuPhotoUrl, saveOrder, updateMenuItem, watchMenu } from '../lib/menu.js'
+import {
+  BEVERAGE_SECTIONS, deleteMenuItem, fetchMenu, formatPrice, menuPhotoUrl, saveOrder, updateMenuItem, watchMenu,
+} from '../lib/menu.js'
 import './Menu.css'
 
 // Folder tabs. The Beverages folder holds category 'coffee' in the database.
@@ -19,8 +21,20 @@ const Arrow = ({ up }) => (
   </svg>
 )
 
-// Owner-only controls under an item: quick switches, edit, and move up/down.
-function OwnerControls({ item, isFirst, isLast, busy, onToggle, onEdit, onMove }) {
+// Owner-only controls under an item: quick switches, move up/down, edit and delete.
+function OwnerControls({ item, isFirst, isLast, busy, onToggle, onEdit, onMove, onDelete }) {
+  const [confirming, setConfirming] = useState(false)
+
+  if (confirming) {
+    return (
+      <div className="menu-owner menu-owner--confirm">
+        <p className="menu-owner__confirm-text">Delete {item.name}? This can't be undone.</p>
+        <button type="button" className="menu-owner__delete-yes" disabled={busy} onClick={() => onDelete(item)}>Delete</button>
+        <button type="button" className="menu-owner__toggle" disabled={busy} onClick={() => setConfirming(false)}>Keep</button>
+      </div>
+    )
+  }
+
   return (
     <div className="menu-owner">
       <button type="button" className="menu-owner__toggle" aria-pressed={item.sold_out} disabled={busy}
@@ -41,6 +55,13 @@ function OwnerControls({ item, isFirst, isLast, busy, onToggle, onEdit, onMove }
         <Arrow />
       </button>
       <button type="button" className="menu-owner__edit" disabled={busy} onClick={() => onEdit(item)}>Edit</button>
+      <button type="button" className="menu-owner__icon menu-owner__icon--delete" aria-label={`Delete ${item.name}`}
+        disabled={busy} onClick={() => setConfirming(true)}>
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor"
+          strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v5M14 11v5" />
+        </svg>
+      </button>
     </div>
   )
 }
@@ -119,6 +140,7 @@ export default function Menu() {
   }
 
   const onToggle = (item, patch) => run(() => updateMenuItem(item.id, patch))
+  const onDelete = (item) => run(() => deleteMenuItem(item))
 
   // Up/down moves an item within its own group (same folder and, for beverages, same section).
   const onMove = (item, step) => run(() => {
@@ -160,7 +182,7 @@ export default function Menu() {
         <MenuItem key={item.id} item={item}>
           {isOwner && (
             <OwnerControls item={item} isFirst={i === 0} isLast={i === items.length - 1} busy={busy}
-              onToggle={onToggle} onEdit={(it) => setEditing({ item: it })} onMove={onMove} />
+              onToggle={onToggle} onEdit={(it) => setEditing({ item: it })} onMove={onMove} onDelete={onDelete} />
           )}
         </MenuItem>
       ))}
