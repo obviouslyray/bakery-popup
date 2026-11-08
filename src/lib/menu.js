@@ -26,6 +26,36 @@ export async function fetchMenu() {
   return data
 }
 
+// Calls onChange whenever the menu may have changed; returns a stop function.
+// Realtime covers most edits within a second or so. It can't report an item
+// turned off for today (customers lose access to that row, so they get no
+// event), so the menu also refreshes on return to the app and once a minute.
+export function watchMenu(onChange) {
+  if (!supabase) return () => {}
+
+  let debounce
+  const channel = supabase
+    .channel('menu-items')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'menu_items' }, () => {
+      clearTimeout(debounce)
+      debounce = setTimeout(onChange, 300)
+    })
+    .subscribe()
+
+  const refreshIfVisible = () => {
+    if (!document.hidden) onChange()
+  }
+  const poll = setInterval(refreshIfVisible, 60 * 1000)
+  document.addEventListener('visibilitychange', refreshIfVisible)
+
+  return () => {
+    clearTimeout(debounce)
+    clearInterval(poll)
+    document.removeEventListener('visibilitychange', refreshIfVisible)
+    supabase.removeChannel(channel)
+  }
+}
+
 // Writes below only succeed for a signed-in owner. Row level security turns a
 // refused update into "no rows", which .single() reports as an error.
 const SAVE_ERROR = 'Could not save. Check your connection, or sign in again.'

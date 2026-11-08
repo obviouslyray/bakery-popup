@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import MenuItemEditor from '../components/MenuItemEditor.jsx'
 import { useAuth } from '../lib/auth.jsx'
-import { BEVERAGE_SECTIONS, fetchMenu, formatPrice, menuPhotoUrl, saveOrder, updateMenuItem } from '../lib/menu.js'
+import { BEVERAGE_SECTIONS, fetchMenu, formatPrice, menuPhotoUrl, saveOrder, updateMenuItem, watchMenu } from '../lib/menu.js'
 import './Menu.css'
 
 // Folder tabs. The Beverages folder holds category 'coffee' in the database.
@@ -102,6 +102,9 @@ export default function Menu() {
       .catch(() => !cancelled && setState({ status: 'error', items: [] }))
     return () => { cancelled = true }
   }, [ready, session])
+
+  // Keep the open menu current as owners make changes.
+  useEffect(() => (ready ? watchMenu(load) : undefined), [ready, load])
 
   const run = async (action) => {
     setBusy(true)
