@@ -57,9 +57,9 @@ function OwnerControls({ item, isFirst, isLast, busy, onToggle, onEdit, onMove, 
       <button type="button" className="menu-owner__edit" disabled={busy} onClick={() => onEdit(item)}>Edit</button>
       <button type="button" className="menu-owner__icon menu-owner__icon--delete" aria-label={`Delete ${item.name}`}
         disabled={busy} onClick={() => setConfirming(true)}>
-        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor"
-          strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v5M14 11v5" />
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor"
+          strokeWidth="3" strokeLinecap="round">
+          <path d="M6 6l12 12M18 6L6 18" />
         </svg>
       </button>
     </div>
