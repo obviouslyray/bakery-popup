@@ -51,28 +51,24 @@ function OwnerControls({ item, isFirst, isLast, busy, onToggle, onEdit, onMove }
 function MenuItem({ item, owner }) {
   const [confirming, setConfirming] = useState(false)
   const photo = menuPhotoUrl(item.photo_path)
-  const classes = [
-    'menu-item', owner && 'menu-item--owner', item.sold_out && 'menu-item--sold-out', !item.on_today && 'menu-item--off-today',
-  ]
+  const classes = ['menu-item', item.sold_out && 'menu-item--sold-out', !item.on_today && 'menu-item--off-today']
   return (
     <li className={classes.filter(Boolean).join(' ')}>
+      {owner && (
+        <button type="button" className="menu-item__delete" aria-label={`Delete ${item.name}`}
+          disabled={owner.busy || confirming} onClick={() => setConfirming(true)}>
+          <svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" fill="none" stroke="currentColor"
+            strokeWidth="3.5" strokeLinecap="round">
+            <path d="M5 5l14 14M19 5L5 19" />
+          </svg>
+        </button>
+      )}
       <div className="menu-item__main">
         {photo && <img className="menu-item__photo" src={photo} alt="" width="64" height="64" loading="lazy" />}
         <div className="menu-item__body">
           <div className="menu-item__top">
             <h3 className="menu-item__name">{item.name}</h3>
-            <div className="menu-item__price-column">
-              {owner && (
-                <button type="button" className="menu-item__delete" aria-label={`Delete ${item.name}`}
-                  disabled={owner.busy || confirming} onClick={() => setConfirming(true)}>
-                  <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor"
-                    strokeWidth="3" strokeLinecap="round">
-                    <path d="M6 6l12 12M18 6L6 18" />
-                  </svg>
-                </button>
-              )}
-              <span className="menu-item__price">{isAddOn(item) ? '+' : ''}{formatPrice(item.price)}</span>
-            </div>
+            <span className="menu-item__price">{isAddOn(item) ? '+' : ''}{formatPrice(item.price)}</span>
           </div>
           {(item.sold_out || !item.on_today) && (
             <div className="menu-item__labels">
