@@ -1,0 +1,22 @@
+/* SignFlip: no timers, global resets, or click handlers. */
+.sf-sign, .sf-sign *, .sf-sign *::before, .sf-sign *::after { box-sizing: border-box; }
+.sf-sign { --sf-duration: 650ms; --sf-cream: #fff5dd; --sf-ink: #302a22; position: relative; width: 100%; min-width: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+.sf-sign__perspective { position: relative; perspective: 1000px; -webkit-perspective: 1000px; }
+.sf-sign__rotor { display: grid; position: relative; width: 100%; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transform: rotateY(0deg); transition: transform var(--sf-duration) cubic-bezier(.4, 0, .2, 1); }
+.sf-sign[data-status="open"] .sf-sign__rotor { transform: rotateY(180deg); }
+.sf-sign[data-status="loading"] .sf-sign__rotor, .sf-sign[data-status="error"] .sf-sign__rotor { transform: rotateY(0deg); transition: none; }
+.sf-sign[data-animate="false"] .sf-sign__rotor { transition: none; }
+.sf-sign__face { grid-area: 1 / 1; min-width: 0; width: 100%; min-height: 205px; display: flex; flex-direction: column; justify-content: center; padding: 29px 16px 24px; border: 7px solid #b98b53; outline: 1px solid #754f30; border-radius: 13px; background: var(--sf-cream); color: var(--sf-ink); text-align: center; backface-visibility: hidden; -webkit-backface-visibility: hidden; box-shadow: inset 0 0 0 2px #e6d2ac, 0 14px 26px #07151170; overflow-wrap: anywhere; }
+.sf-sign__face--front { transform: rotateY(0deg); }
+.sf-sign__face--back { transform: rotateY(180deg); }
+.sf-sign__face::before, .sf-sign__face::after { content: ""; position: absolute; top: 9px; width: 7px; height: 7px; border-radius: 50%; background: #6d5031; }
+.sf-sign__face::before { left: 15%; } .sf-sign__face::after { right: 15%; }
+.sf-sign__eyebrow { margin: 0 0 10px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; }
+.sf-sign__title { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(28px, 7.2vw, 40px); line-height: 1.14; font-weight: 700; text-wrap: balance; }
+.sf-sign__subtitle { margin: 13px 0 0; font-size: 13px; line-height: 1.5; }
+.sf-sign__hours { align-self: center; padding: 5px 18px; border-radius: 30px; background: #315b55; color: #fff8e9; font-size: 18px; font-weight: 700; }
+.sf-sign__cord { position: absolute; left: 50%; bottom: calc(100% - 9px); width: 66%; height: 116px; transform: translateX(-50%); pointer-events: none; }
+.sf-sign__cord::before, .sf-sign__cord::after { content: ""; position: absolute; bottom: 0; width: 3px; height: 116px; background: #d1b98b; box-shadow: 1px 0 2px #0008; transform-origin: bottom center; }
+.sf-sign__cord::before { left: 0; transform: rotate(39deg); } .sf-sign__cord::after { right: 0; transform: rotate(-39deg); }
+.sf-sign__sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+@media (prefers-reduced-motion: reduce) { .sf-sign__rotor { transition: none !important; } }
