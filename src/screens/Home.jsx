@@ -1,8 +1,10 @@
+import HomeScreen from '../components/HomeScreen.jsx';
+
 export default function Home() {
   return (
-    <section>
-      <h1>Home</h1>
-      <p className="placeholder">Placeholder: the serving window with the hanging open/closed sign goes here.</p>
-    </section>
-  )
+    <HomeScreen
+      status="closed"
+      hours="6–11"
+    />
+  );
 }
