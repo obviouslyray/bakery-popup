@@ -1,10 +1,7 @@
-import HomeScreen from '../components/HomeScreen.jsx';
+import HomeScreen from '../components/HomeScreen.jsx'
+import { useTruckStatus } from '../lib/useTruckStatus.js'
 
 export default function Home() {
-  return (
-    <HomeScreen
-      status="closed"
-      hours="6–11"
-    />
-  );
+  const { status } = useTruckStatus()
+  return <HomeScreen status={status} hours="6–11" />
 }
