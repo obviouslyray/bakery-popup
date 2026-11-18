@@ -1,12 +1,12 @@
 import { useLocation } from 'react-router-dom'
 import OwnerOnly from './OwnerOnly.jsx'
+import ShiftControls from './ShiftControls.jsx'
 import { signOut } from '../lib/supabase.js'
 import './OwnerBar.css'
 
 // Placeholder owner tools for screens whose features are not built yet
-// (shifts, schedule). The Menu screen has its own inline owner controls.
+// (schedule). Home has the open/close controls; Menu has its own inline controls.
 const TOOLS = {
-  '/': ['Open the truck'],
   '/calendar': ['Edit the 7-day schedule'],
 }
 
@@ -21,6 +21,7 @@ export default function OwnerBar() {
           <span className="owner-bar__label">Owner mode</span>
           <button type="button" className="owner-bar__signout" onClick={signOut}>Sign out</button>
         </div>
+        {pathname === '/' && <ShiftControls />}
         {tools.length > 0 && (
           <div className="owner-bar__tools">
             {tools.map((tool) => (
