@@ -21,7 +21,7 @@ export default function App() {
 
   return (
     <PhoneFrame>
-      <main className={showTabs ? 'screen screen--with-tabs' : 'screen'}>
+      <main className={['screen', showTabs && 'screen--with-tabs', pathname === '/' && 'screen--full-bleed'].filter(Boolean).join(' ')}>
         {showTabs && <OwnerBar />}
         <Routes>
           <Route path="/" element={<Home />} />
