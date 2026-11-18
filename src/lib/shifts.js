@@ -123,6 +123,10 @@ async function uploadShiftPhoto(shiftId, file) {
   return path
 }
 
+export function shiftPhotoUrl(path) {
+  return path && supabase ? supabase.storage.from(BUCKET).getPublicUrl(path).data.publicUrl : null
+}
+
 const removeShiftPhoto = async (path) => {
   if (path) await supabase.storage.from(BUCKET).remove([path]).catch(() => {})
 }

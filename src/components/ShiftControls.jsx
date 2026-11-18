@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { closeShift, formatShiftTime, getPhoneLocation, openShift, refreshShift, useOpenShift } from '../lib/shifts.js'
 import './ShiftControls.css'
 
-// Owner sheet for starting a shift: spot name (required), phone location and a photo (optional).
+// Owner sheet for starting a shift: where to find us (required), phone location and a photo (optional).
 function OpenTruckSheet({ onClose, openedMeanwhile }) {
   const [spotName, setSpotName] = useState('')
   const [location, setLocation] = useState({ state: 'none', value: null, message: '' })
@@ -37,7 +37,7 @@ function OpenTruckSheet({ onClose, openedMeanwhile }) {
   const onSubmit = async (e) => {
     e.preventDefault()
     const name = spotName.trim()
-    if (!name) return setError('Add the spot name, like "Wash Park, east lot".')
+    if (!name) return setError('Add where to find you, like "Wash Park, east lot, by the boathouse".')
     setBusy(true)
     setError(null)
     try {
@@ -63,9 +63,9 @@ function OpenTruckSheet({ onClose, openedMeanwhile }) {
         )}
 
         <label className="shift-sheet__field">
-          Spot name
+          Where to find us
           <input value={spotName} onChange={(e) => setSpotName(e.target.value)} maxLength={80} autoFocus
-            placeholder="Wash Park, east lot" required />
+            placeholder="Wash Park, east lot, by the boathouse" required />
         </label>
 
         <div className="shift-sheet__field">
