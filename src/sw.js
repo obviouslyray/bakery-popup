@@ -1,4 +1,4 @@
-// Service worker for the Bakery & Coffee Pop-Up.
+// Service worker for Crumb & Go Bakery & Coffee.
 // Built by vite-plugin-pwa (injectManifest strategy): the plugin replaces
 // self.__WB_MANIFEST with the list of files from the build to precache.
 import { cleanupOutdatedCaches, precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching'

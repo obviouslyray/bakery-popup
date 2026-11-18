@@ -39,7 +39,7 @@ export default function Passport() {
     <section className="passport">
       <div className="passport__page">
         <header className="passport__header">
-          <p className="passport__eyebrow">Bakery &amp; Coffee Pop-Up</p>
+          <p className="passport__eyebrow">Crumb &amp; Go Bakery &amp; Coffee</p>
           <h1 className="passport__title">Passport</h1>
           <p className="passport__subtitle">Visas &middot; Stamps</p>
         </header>

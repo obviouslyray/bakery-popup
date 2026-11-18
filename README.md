@@ -1,6 +1,6 @@
-# bakery-popup
+# Crumb & Go Bakery & Coffee
 
-A mobile-first progressive web app for a Colorado bakery and coffee pop-up food truck (CS491/CS492, Team 2610 Orange). It's built with React and Vite and hosted on GitHub Pages.
+A mobile-first progressive web app for Crumb & Go Bakery & Coffee, a Colorado bakery and coffee food truck (CS491/CS492, Team 2610 Orange). It's built with React and Vite and hosted on GitHub Pages.
 
 Live site: https://obviouslyray.github.io/bakery-popup/
 

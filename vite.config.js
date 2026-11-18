@@ -22,9 +22,9 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,svg,png,ico,webp,woff2}'],
       },
       manifest: {
-        name: 'Bakery & Coffee Pop-Up',
-        short_name: 'Pop-Up',
-        description: 'Find the bakery and coffee truck: today\'s spot, the week ahead, and the menu.',
+        name: 'Crumb & Go Bakery & Coffee',
+        short_name: 'Crumb & Go', // home-screen label; phones cut longer names
+        description: 'Find the Crumb & Go truck: today\'s spot, the week ahead, and the menu.',
         start_url: base,
         scope: base,
         display: 'standalone',

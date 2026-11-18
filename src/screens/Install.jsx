@@ -46,7 +46,7 @@ function AndroidInstall() {
   const [dismissed, setDismissed] = useState(false)
 
   if (installed) {
-    return <p className="install__done">Installed. Look for the Pop-Up icon on your home screen.</p>
+    return <p className="install__done">Installed. Look for the Crumb &amp; Go icon on your home screen.</p>
   }
 
   if (canPrompt) {
@@ -80,7 +80,7 @@ export default function Install() {
   return (
     <section className="install">
       <img className="install__icon" src="pwa-192x192.png" alt="" width="96" height="96" />
-      <h1>Get the Pop-Up app</h1>
+      <h1>Get the Crumb &amp; Go app</h1>
       <p className="placeholder">See where the truck is today, the week ahead, and the menu, right from your home screen.</p>
 
       <div className="install__body">

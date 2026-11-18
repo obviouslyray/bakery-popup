@@ -16,7 +16,7 @@ const PHOTOS = {
 
 const prefersReducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
-export default function HomeScreen({ status = 'closed', hours = '6–11', brand = 'Bakery & Coffee', imageSrc = defaultWindowImage, animate = true }) {
+export default function HomeScreen({ status = 'closed', hours = '6–11', brand = 'Crumb & Go Bakery & Coffee', imageSrc = defaultWindowImage, animate = true }) {
   const view = getSignState(status, hours);
   const note = view.isOpen ? 'Fresh bakes. Good coffee. See you at the window.' : view.status === 'closed' ? 'Check back for our next opening.' : 'We cannot confirm the current opening status.';
 
