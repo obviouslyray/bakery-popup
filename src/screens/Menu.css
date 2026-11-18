@@ -396,3 +396,42 @@
   opacity: 0.6;
   cursor: default;
 }
+
+/* Edge to edge: menu items run the full screen width as stacked rows; headings,
+   messages and buttons keep the page's side padding. */
+.folders__panel {
+  margin: 0 calc(-1 * var(--gutter));
+}
+
+.menu__list {
+  gap: 2px;
+}
+
+.menu-item {
+  padding-inline: var(--gutter);
+  border-radius: 0;
+}
+
+.menu-group__title,
+.menu-group__empty,
+.folders__empty,
+.folders__panel > .placeholder {
+  margin-inline: var(--gutter);
+}
+
+.folders__empty {
+  padding-inline: 0;
+}
+
+.menu__add {
+  width: auto;
+  margin-inline: var(--gutter);
+}
+
+.menu-group--hidden {
+  margin-inline: var(--gutter);
+}
+
+.menu-group--hidden .menu__list {
+  margin-inline: calc(-1 * var(--gutter) - 10px);
+}

@@ -41,3 +41,19 @@
   font-weight: 600;
   color: #3f6b45;
 }
+
+/* Edge to edge: the Currently card spans the full screen width and runs up to the top edge. */
+.currently {
+  margin-inline: calc(-1 * var(--gutter));
+  margin-top: calc(-24px - env(safe-area-inset-top));
+  border-radius: 0;
+}
+
+.currently__label,
+.currently__body {
+  padding-inline: var(--gutter);
+}
+
+.currently__label {
+  padding-top: calc(10px + env(safe-area-inset-top));
+}

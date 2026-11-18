@@ -206,3 +206,12 @@
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
+
+/* Edge to edge: the passport page spans the full screen width and runs up to the top edge. */
+.passport__page {
+  margin: calc(-24px - env(safe-area-inset-top)) calc(-1 * var(--gutter)) 0;
+  padding-top: calc(24px + env(safe-area-inset-top));
+  padding-inline: var(--gutter);
+  border-radius: 0;
+  border-inline: 0;
+}
