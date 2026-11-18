@@ -80,6 +80,8 @@ export default function Install() {
   return (
     <section className="install">
       <img className="install__icon" src="pwa-192x192.png" alt="" width="96" height="96" />
+      {/* Crumb & Go logo (not live yet): use this in place of the line above. */}
+      {/* <img className="install__icon" src="logo/pwa-192x192.png" alt="" width="96" height="96" /> */}
       <h1>Get the Crumb &amp; Go app</h1>
       <p className="placeholder">See where the truck is today, the week ahead, and the menu, right from your home screen.</p>
 

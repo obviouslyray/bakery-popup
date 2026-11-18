@@ -20,6 +20,9 @@ export default defineConfig({
       includeAssets: ['favicon.svg', 'favicon.ico', 'apple-touch-icon-180x180.png'],
       injectManifest: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,webp,woff2}'],
+        // Crumb & Go logo icons (public/logo/) sit unused until the logo goes live,
+        // so phones don't download them. Remove this line when switching to the logo.
+        globIgnores: ['logo/**'],
       },
       manifest: {
         name: 'Crumb & Go Bakery & Coffee',
@@ -36,6 +39,13 @@ export default defineConfig({
           { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png' },
           { src: 'maskable-icon-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
         ],
+        // Crumb & Go logo (not live yet). To switch: use these icons instead of the ones above,
+        // remove globIgnores, and swap the commented lines in index.html and Install.jsx.
+        // icons: [
+        //   { src: 'logo/pwa-192x192.png', sizes: '192x192', type: 'image/png' },
+        //   { src: 'logo/pwa-512x512.png', sizes: '512x512', type: 'image/png' },
+        //   { src: 'logo/maskable-icon-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+        // ],
       },
       devOptions: {
         enabled: false,
