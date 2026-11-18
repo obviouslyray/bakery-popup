@@ -1,14 +1,13 @@
+// #install page - the page the share qr code opens
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { detectPlatform, isRunningInstalled, promptInstall, useInstallPrompt } from '../lib/install.js'
 import './Install.css'
 
-// Landing page for the "Share the app" QR code.
-// Android: one-tap Install button. iPhone: page menu > Share > Add to Home Screen steps.
+// #install page - android gets an install button, iphone gets the steps (share > add to home screen)
 
-// Simple drawing of Safari's address bar with the page-menu button at its left
-// end circled. The button's icon varies by phone (it can be a puzzle piece), so
-// it is drawn as a blank key instead of a specific symbol.
+// drawing of safari's address bar with the button on the left circled. that button's icon
+// is different on different iphones (sometimes a puzzle piece) so it's just drawn blank
 function AddressBarDrawing() {
   return (
     <div className="address-bar" role="img"
@@ -22,6 +21,7 @@ function AddressBarDrawing() {
   )
 }
 
+// iphone steps
 function IosSteps() {
   return (
     <>
@@ -41,14 +41,16 @@ function IosSteps() {
   )
 }
 
+// android: install button if chrome lets us, otherwise manual steps
 function AndroidInstall() {
   const { canPrompt, installed } = useInstallPrompt()
-  const [dismissed, setDismissed] = useState(false)
+  const [dismissed, setDismissed] = useState(false) // they said no to chrome's popup
 
   if (installed) {
     return <p className="install__done">Installed. Look for the Crumb &amp; Go icon on your home screen.</p>
   }
 
+  // chrome gave us the install event, show the button
   if (canPrompt) {
     const onInstall = async () => setDismissed((await promptInstall()) === 'dismissed')
     return (
@@ -59,8 +61,8 @@ function AndroidInstall() {
     )
   }
 
-  // Chrome has not offered the install dialog (already installed, another browser,
-  // or the dialog was turned down), so give the manual route.
+  // chrome didn't offer it (already installed, different browser, or they said no before)
+  // so show the manual way
   return (
     <>
       {dismissed && <p className="install__hint">No problem. You can still install it this way:</p>}
@@ -74,17 +76,18 @@ function AndroidInstall() {
 }
 
 export default function Install() {
-  const [platform] = useState(detectPlatform)
-  const [installed] = useState(isRunningInstalled)
+  const [platform] = useState(detectPlatform) // what phone
+  const [installed] = useState(isRunningInstalled) // already opened from home screen?
 
   return (
     <section className="install">
       <img className="install__icon" src="pwa-192x192.png" alt="" width="96" height="96" />
-      {/* Crumb & Go logo (not live yet): use this in place of the line above. */}
+      {/* #logo - new logo, not live yet. swap this with the line above to turn it on */}
       {/* <img className="install__icon" src="logo/pwa-192x192.png" alt="" width="96" height="96" /> */}
       <h1>Get the Crumb &amp; Go app</h1>
       <p className="placeholder">See where the truck is today, the week ahead, and the menu, right from your home screen.</p>
 
+      {/* pick what to show */}
       <div className="install__body">
         {installed ? (
           <p className="install__done">You already have the app. Enjoy!</p>

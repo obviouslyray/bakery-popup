@@ -1,3 +1,4 @@
+/* #passport qr code - dark background, popup slides up from the bottom */
 .qr-sheet {
   position: fixed;
   inset: 0;
@@ -8,10 +9,11 @@
   background: rgb(30 20 10 / 0.55);
 }
 
+/* white panel */
 .qr-sheet__sheet {
   width: 100%;
   max-width: var(--phone-width);
-  padding: 24px 20px calc(20px + env(safe-area-inset-bottom));
+  padding: 24px 20px calc(20px + env(safe-area-inset-bottom)); /* room for the iphone home bar */
   border-radius: 20px 20px 0 0;
   background: var(--color-surface);
   text-align: center;
@@ -24,6 +26,7 @@
   color: var(--color-primary);
 }
 
+/* white square behind the qr so phones can scan it */
 .qr-sheet__code {
   display: grid;
   place-items: center;
@@ -41,12 +44,14 @@
   border-radius: 12px;
 }
 
+/* explanation text */
 .qr-sheet__text {
   margin: 16px 0 0;
   font-size: 0.9rem;
   color: var(--color-muted);
 }
 
+/* done button */
 .qr-sheet__close {
   width: 100%;
   margin-top: 20px;

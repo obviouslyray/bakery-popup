@@ -1,23 +1,27 @@
 <!doctype html>
+<!-- #app shell - the one html page, react fills in the root div -->
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#5a3a22" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" /> <!-- viewport-fit=cover lets it go under the notch -->
+    <meta name="theme-color" content="#5a3a22" /> <!-- #app coloring - phone's top bar color -->
     <meta name="description" content="Find the Crumb &amp; Go truck: today's spot, the week ahead, and the menu." />
+    <!-- iphone home screen stuff -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Crumb &amp; Go" />
+    <!-- icons (browser tab + iphone home screen) -->
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="apple-touch-icon-180x180.png" />
-    <!-- Crumb & Go logo (not live yet): replace the two lines above with these.
+    <!-- #logo - new logo, not live yet: replace the two lines above with these.
     <link rel="icon" href="logo/favicon-64x64.png" type="image/png" />
     <link rel="apple-touch-icon" href="logo/apple-touch-icon-180x180.png" />
     -->
     <title>Crumb &amp; Go Bakery &amp; Coffee</title>
   </head>
   <body>
+    <!-- react goes here -->
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

@@ -1,3 +1,4 @@
+/* #owner login - outlined sign out button */
 .owner__signout {
   display: block;
   width: 100%;
@@ -12,6 +13,7 @@
   cursor: pointer;
 }
 
+/* "back to the app" link */
 .owner__back {
   display: inline-block;
   margin-top: 20px;

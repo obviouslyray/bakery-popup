@@ -1,11 +1,13 @@
 import './PhoneFrame.css'
 
-// On phones the frame is the whole screen. On wider screens the app sits in a
-// phone-width column, with a blurred copy of the background filling the sides.
+// #phone frame - on a phone this is just the full screen. on a computer the app
+// stays phone sized in the middle with a blurry background on the sides
 export default function PhoneFrame({ children }) {
   return (
     <div className="phone-frame">
+      {/* blurry sides */}
       <div className="phone-frame__backdrop" aria-hidden="true" />
+      {/* the actual app */}
       <div className="phone-frame__device">{children}</div>
     </div>
   )

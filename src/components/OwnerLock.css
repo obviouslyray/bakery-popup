@@ -1,9 +1,9 @@
-/* Small round bubble just above the Passport tab (right end of the tab bar). */
+/* #owner lock - round lock bubble right above the passport tab */
 .owner-lock__bubble {
   position: fixed;
   z-index: 15;
-  bottom: calc(var(--tab-bar-height) + env(safe-area-inset-bottom) + 12px);
-  right: max(16px, calc(50% - var(--phone-width) / 2 + 16px));
+  bottom: calc(var(--tab-bar-height) + env(safe-area-inset-bottom) + 12px); /* just above the tab bar */
+  right: max(16px, calc(50% - var(--phone-width) / 2 + 16px)); /* lines up with the right edge of the app on desktop too */
   display: grid;
   place-items: center;
   width: 48px;
@@ -15,11 +15,11 @@
   color: var(--color-surface);
   box-shadow: 0 6px 16px rgb(60 40 20 / 0.35);
   cursor: pointer;
-  animation: owner-lock-pop 220ms ease-out;
+  animation: owner-lock-pop 220ms ease-out; /* pops in */
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Little tail pointing down at the Passport tab, like a speech bubble. */
+/* little point at the bottom aimed at the passport tab, like a speech bubble */
 .owner-lock__bubble::after {
   content: '';
   position: absolute;
@@ -38,11 +38,13 @@
   outline-offset: 3px;
 }
 
+/* grows in from small */
 @keyframes owner-lock-pop {
   from { transform: scale(0.4); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
 }
 
+/* #owner lock - dark background behind the login popup */
 .owner-lock__backdrop {
   position: fixed;
   inset: 0;
@@ -54,6 +56,7 @@
   background: rgb(30 20 10 / 0.55);
 }
 
+/* the login popup box */
 .owner-lock__popup {
   position: relative;
   width: 100%;
@@ -66,6 +69,7 @@
   animation: owner-lock-pop 180ms ease-out;
 }
 
+/* x button in the corner */
 .owner-lock__x {
   position: absolute;
   top: 8px;
@@ -82,6 +86,7 @@
   cursor: pointer;
 }
 
+/* lock icon in a brown circle */
 .owner-lock__icon {
   display: inline-grid;
   place-items: center;
@@ -98,6 +103,7 @@
   color: var(--color-primary);
 }
 
+/* login form inside the popup */
 .owner-lock__popup .owner-form {
   margin-top: 16px;
 }
@@ -107,6 +113,7 @@
   color: var(--color-muted);
 }
 
+/* sign out button */
 .owner-lock__action {
   width: 100%;
   border: 0;

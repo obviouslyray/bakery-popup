@@ -1,11 +1,13 @@
+/* #currently card - the card at the top of the calendar when open */
 .currently {
   margin-bottom: 24px;
-  overflow: hidden;
+  overflow: hidden; /* keeps the photo inside the card */
   border-radius: 14px;
   background: var(--color-surface);
   box-shadow: 0 4px 14px rgb(60 40 20 / 0.15);
 }
 
+/* brown "CURRENTLY" header strip */
 .currently__label {
   margin: 0;
   padding: 10px 14px;
@@ -17,6 +19,7 @@
   color: var(--color-surface);
 }
 
+/* owner's photo, cropped to 4:3 */
 .currently__photo {
   display: block;
   width: 100%;
@@ -28,6 +31,7 @@
   padding: 12px 14px 14px;
 }
 
+/* where to find us text */
 .currently__spot {
   margin: 0;
   font-size: 1.15rem;
@@ -35,6 +39,7 @@
   color: var(--color-text);
 }
 
+/* green "open now until 11" */
 .currently__hours {
   margin: 4px 0 0;
   font-size: 0.9rem;
@@ -42,18 +47,20 @@
   color: #3f6b45;
 }
 
-/* Edge to edge: the Currently card spans the full screen width and runs up to the top edge. */
+/* edge to edge - negative margins cancel out the page padding so it touches the sides and top */
 .currently {
   margin-inline: calc(-1 * var(--gutter));
   margin-top: calc(-24px - env(safe-area-inset-top));
   border-radius: 0;
 }
 
+/* put the padding back on the text so it isn't touching the edge */
 .currently__label,
 .currently__body {
   padding-inline: var(--gutter);
 }
 
+/* push the header below the notch */
 .currently__label {
   padding-top: calc(10px + env(safe-area-inset-top));
 }

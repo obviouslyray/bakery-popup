@@ -1,21 +1,23 @@
+/* #phone frame */
 .phone-frame {
   position: relative;
   min-height: 100dvh;
   display: flex;
-  justify-content: center;
+  justify-content: center; /* app in the middle */
   background: var(--color-bg);
 }
 
-/* Blurred copy of the background. Placeholder gradient until truck photos exist. */
+/* blurry copy of the background for the sides on desktop (hidden on phones) */
 .phone-frame__backdrop {
   display: none;
   position: fixed;
-  inset: -40px;
+  inset: -40px; /* bigger than the screen so the blur doesn't show edges */
   background: var(--app-background);
   filter: blur(24px) brightness(0.85);
   transform: scale(1.1);
 }
 
+/* the app itself */
 .phone-frame__device {
   position: relative;
   width: 100%;
@@ -24,6 +26,7 @@
   overflow-x: hidden;
 }
 
+/* desktop/tablet: show the blurry sides and cap the width */
 @media (min-width: 600px) {
   .phone-frame__backdrop {
     display: block;

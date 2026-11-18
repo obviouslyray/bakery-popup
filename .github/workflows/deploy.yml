@@ -1,15 +1,18 @@
+# #app shell - builds the app and puts it on github pages every time we push to main
 name: Deploy to GitHub Pages
 
 on:
   push:
     branches: [main]
-  workflow_dispatch:
+  workflow_dispatch: # or run it by hand from the actions tab
 
+# what github actions is allowed to do
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# if we push twice fast, cancel the older one
 concurrency:
   group: pages
   cancel-in-progress: true
@@ -23,24 +26,25 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
-      - run: npm run build
+      - run: npm ci # install exact versions from package-lock
+      - run: npm run build # makes dist/
         env:
-          # Repository variables (Settings > Secrets and variables > Actions), read from
-          # the Variables tab or, if added there instead, the Secrets tab.
-          # Public values only; never put the service-role or secret key here.
+          # repo variables, if they're set. not really needed anymore since the public key is in supabase.js.
+          # #security - public values only, never the service role/secret key
           VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL || secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY || secrets.VITE_SUPABASE_ANON_KEY }}
+      # hand dist/ to github pages
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
+  # second job: actually publish it
   deploy:
     needs: build
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url }} # the live url
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4

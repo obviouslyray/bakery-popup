@@ -1,13 +1,13 @@
+// #passport - passport tab
 import { useState } from 'react'
 import QrSheet from '../components/QrSheet.jsx'
 import { formatStampDate, loadStamps, stampStyle, transferUrl } from '../lib/stamps.js'
 import './Passport.css'
 
-const STAMPS_PER_PAGE = 10
+const STAMPS_PER_PAGE = 10 // 10 stamps per page
 
-// Where each of a page's 10 stamps lands, as the center point in % of the page
-// area. Fixed, so a stamp is in the same place every time; every other page is
-// mirrored so the pages don't look alike.
+// #stamps - where each of the 10 stamps goes on a page (x%, y%). always the same spots,
+// and every other page is flipped so they don't all look the same
 const STAMP_SPOTS = [
   [16, 12], [54, 12], [84, 13],
   [27, 37], [72, 41],
@@ -15,6 +15,7 @@ const STAMP_SPOTS = [
   [31, 87], [73, 85],
 ]
 
+// arrow icon for the page buttons
 const Arrow = ({ direction }) => (
   <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor"
     strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round">
@@ -23,17 +24,17 @@ const Arrow = ({ direction }) => (
 )
 
 export default function Passport() {
-  const [stamps] = useState(loadStamps)
-  // Always at least one page; a new page opens once the last one is full.
+  const [stamps] = useState(loadStamps) // #stamps - load from the phone once
+  // always at least 1 page, a new one starts when the last is full
   const pageCount = Math.max(1, Math.ceil(stamps.length / STAMPS_PER_PAGE))
-  const [page, setPage] = useState(0)
-  const [sheet, setSheet] = useState(null) // null | 'transfer' | 'share'
+  const [page, setPage] = useState(0) // which page we're on (0 = first)
+  const [sheet, setSheet] = useState(null) // null | 'transfer' | 'share' // which qr popup is open
   const closeSheet = () => setSheet(null)
 
-  const first = page * STAMPS_PER_PAGE
-  const pageStamps = stamps.slice(first, first + STAMPS_PER_PAGE)
+  const first = page * STAMPS_PER_PAGE // index of the first stamp on this page
+  const pageStamps = stamps.slice(first, first + STAMPS_PER_PAGE) // stamps on this page
   const pageFull = pageStamps.length === STAMPS_PER_PAGE
-  const hasNext = pageFull && page < pageCount - 1
+  const hasNext = pageFull && page < pageCount - 1 // can only go forward if this page is full
 
   return (
     <section className="passport">
@@ -45,13 +46,15 @@ export default function Passport() {
         </header>
 
         <div className="passport__field">
+          {/* #stamps - empty passport message, or the stamps */}
           {pageStamps.length === 0 ? (
             <p className="passport__blank">Catch the truck and scan its code to collect your first stamp.</p>
           ) : (
             <ol className="passport__stamps">
               {pageStamps.map((stamp, i) => {
-                const { ink, tilt } = stampStyle(first + i)
-                const [x, y] = STAMP_SPOTS[i]
+                const { ink, tilt } = stampStyle(first + i) // color + tilt
+                const [x, y] = STAMP_SPOTS[i] // where it goes on the page
+                // flip the x on odd pages
                 return (
                   <li key={i} className="passport__spot"
                     style={{ left: `${page % 2 ? 100 - x : x}%`, top: `${y}%` }}>
@@ -67,6 +70,7 @@ export default function Passport() {
           )}
         </div>
 
+        {/* page arrows */}
         <footer className="passport__footer">
           {page > 0 ? (
             <button type="button" className="passport__arrow passport__arrow--back"
@@ -77,7 +81,7 @@ export default function Passport() {
             <span />
           )}
           <span>Page {page + 1}</span>
-          {/* Green when this page is full and the next one has stamps, gray otherwise. */}
+          {/* green when this page is full and there's a next page, grey otherwise */}
           <button type="button"
             className={`passport__arrow ${hasNext ? 'passport__arrow--ready' : ''}`}
             onClick={() => setPage(page + 1)} disabled={!hasNext}
@@ -87,6 +91,7 @@ export default function Passport() {
         </footer>
       </div>
 
+      {/* #passport qr code - button to move stamps to a new phone */}
       <button type="button" className="passport__action" onClick={() => setSheet('transfer')}>
         <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor"
           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -95,6 +100,7 @@ export default function Passport() {
         </svg>
         Move stamps to a new phone
       </button>
+      {/* #passport qr code - share the app button */}
       <button type="button" className="passport__action passport__action--secondary" onClick={() => setSheet('share')}>
         <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor"
           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -103,6 +109,7 @@ export default function Passport() {
         Share the app
       </button>
 
+      {/* #passport qr code - qr with all the stamps in the link */}
       {sheet === 'transfer' && (
         <QrSheet
           title="Move stamps to a new phone"
@@ -115,6 +122,7 @@ export default function Passport() {
             : 'There are no stamps to move yet.'}
         </QrSheet>
       )}
+      {/* #passport qr code - qr that goes to the install page */}
       {sheet === 'share' && (
         <QrSheet
           title="Share the app"

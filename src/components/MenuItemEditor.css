@@ -1,3 +1,4 @@
+/* #menu editor - popup that slides up from the bottom, dark see through background behind it */
 .editor {
   position: fixed;
   inset: 0;
@@ -8,13 +9,14 @@
   background: rgb(30 20 10 / 0.55);
 }
 
+/* the white panel */
 .editor__sheet {
   width: 100%;
   max-width: var(--phone-width);
-  max-height: 92dvh;
+  max-height: 92dvh; /* scrolls if the phone is short */
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 22px 20px calc(20px + env(safe-area-inset-bottom));
+  padding: 22px 20px calc(20px + env(safe-area-inset-bottom)); /* room for the iphone home bar */
   border-radius: 20px 20px 0 0;
   background: var(--color-surface);
   box-shadow: 0 -8px 24px rgb(0 0 0 / 0.25);
@@ -26,6 +28,7 @@
   color: var(--color-primary);
 }
 
+/* label above each box */
 .editor__field {
   display: grid;
   gap: 6px;
@@ -43,10 +46,10 @@
   border-radius: 10px;
   background: #fff;
   font: inherit;
-  font-size: 1rem; /* 16px keeps iPhone from zooming in on focus */
+  font-size: 1rem; /* 16px or iphone zooms in */
   font-weight: 400;
   color: var(--color-text);
-  resize: vertical;
+  resize: vertical; /* can only drag the box taller, not wider */
 }
 
 .editor__field input:focus,
@@ -56,6 +59,7 @@
   outline-offset: 1px;
 }
 
+/* $ sign next to the price box */
 .editor__price {
   display: flex;
   align-items: center;
@@ -63,6 +67,7 @@
   font-size: 1.1rem;
 }
 
+/* bakery / beverages toggle (two buttons that look like one switch) */
 .editor__segmented {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -82,11 +87,13 @@
   cursor: pointer;
 }
 
+/* the picked one is white */
 .editor__segmented button[aria-pressed='true'] {
   background: var(--color-surface);
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.15);
 }
 
+/* allergen chips */
 .editor__chips {
   display: flex;
   flex-wrap: wrap;
@@ -105,12 +112,14 @@
   cursor: pointer;
 }
 
+/* brown when picked */
 .editor__chip[aria-pressed='true'] {
   border-color: var(--color-primary);
   background: var(--color-primary);
   color: var(--color-surface);
 }
 
+/* #menu photos - preview + buttons in a row */
 .editor__photo {
   display: flex;
   align-items: center;
@@ -125,6 +134,7 @@
   object-fit: cover;
 }
 
+/* dashed "no photo" box */
 .editor__photo-empty {
   display: grid;
   place-items: center;
@@ -134,6 +144,7 @@
   color: var(--color-muted);
 }
 
+/* replace / remove buttons */
 .editor__small-button {
   padding: 8px 12px;
   border: 2px solid var(--color-primary);
@@ -150,6 +161,7 @@
   border-color: transparent;
 }
 
+/* #sold out / #menu visibility - the two checkboxes at the top */
 .editor__switches {
   display: grid;
   grid-template-columns: 2fr 3fr;
@@ -170,16 +182,19 @@
   cursor: pointer;
 }
 
+/* brown border when it's checked */
 .editor__switch:has(input:checked) {
   border-color: var(--color-primary);
 }
 
+/* bigger checkbox in our brown */
 .editor__switch input {
   width: 22px;
   height: 22px;
   accent-color: var(--color-primary);
 }
 
+/* red error text */
 .editor__error {
   margin: 0 0 12px;
   font-weight: 600;
@@ -192,12 +207,14 @@
   color: #b23a32;
 }
 
+/* save + cancel, save is wider */
 .editor__actions {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 10px;
 }
 
+/* brown save button */
 .editor__button {
   padding: 13px 16px;
   border: 2px solid var(--color-primary);
@@ -219,11 +236,13 @@
   color: var(--color-primary);
 }
 
+/* #menu delete - red delete button */
 .editor__button--danger {
   border-color: #b23a32;
   background: #b23a32;
 }
 
+/* #menu delete - "delete item" link at the bottom */
 .editor__delete {
   display: block;
   margin: 14px auto 0;
@@ -236,6 +255,7 @@
   cursor: pointer;
 }
 
+/* grey hint under the section dropdown */
 .editor__hint {
   font-size: 0.85rem;
   font-weight: 500;

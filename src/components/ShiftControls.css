@@ -1,9 +1,11 @@
+/* #open truck / #close truck - owner panel on home */
 .shift-controls {
   display: grid;
   gap: 8px;
   margin-top: 10px;
 }
 
+/* closed/open/checking text */
 .shift-controls__status {
   margin: 10px 0 0;
   color: var(--color-text);
@@ -13,6 +15,7 @@
   margin: 0;
 }
 
+/* brown buttons */
 .shift-controls__button {
   padding: 12px 14px;
   border: 2px solid var(--color-primary);
@@ -24,27 +27,32 @@
   cursor: pointer;
 }
 
+/* faded while busy */
 .shift-controls__button:disabled {
   opacity: 0.6;
   cursor: default;
 }
 
+/* red close button */
 .shift-controls__button--danger {
   border-color: #b23a32;
   background: #b23a32;
 }
 
+/* outlined "keep open" button */
 .shift-controls__button--plain {
   background: none;
   color: var(--color-primary);
 }
 
+/* close + keep open side by side */
 .shift-controls__confirm {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
 }
 
+/* "close the truck now?" spans both columns, red */
 .shift-controls__confirm p {
   grid-column: 1 / -1;
   margin: 0;
@@ -52,13 +60,14 @@
   color: #b23a32;
 }
 
+/* red error text */
 .shift-controls__error {
   margin: 0;
   font-weight: 600;
   color: #b23a32;
 }
 
-/* Open the truck sheet */
+/* #open truck - popup that slides up from the bottom */
 .shift-sheet {
   position: fixed;
   inset: 0;
@@ -66,16 +75,17 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  background: rgb(30 20 10 / 0.55);
+  background: rgb(30 20 10 / 0.55); /* dark see through background */
 }
 
+/* the white panel */
 .shift-sheet__panel {
   width: 100%;
   max-width: var(--phone-width);
-  max-height: 92dvh;
+  max-height: 92dvh; /* scrolls if the phone is short */
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 22px 20px calc(20px + env(safe-area-inset-bottom));
+  padding: 22px 20px calc(20px + env(safe-area-inset-bottom)); /* extra padding for the iphone home bar */
   border-radius: 20px 20px 0 0;
   background: var(--color-surface);
   box-shadow: 0 -8px 24px rgb(0 0 0 / 0.25);
@@ -87,6 +97,7 @@
   color: var(--color-primary);
 }
 
+/* label above each box */
 .shift-sheet__field {
   display: grid;
   gap: 6px;
@@ -102,7 +113,7 @@
   border-radius: 10px;
   background: #fff;
   font: inherit;
-  font-size: 1rem; /* 16px keeps iPhone from zooming in on focus */
+  font-size: 1rem; /* 16px keeps iPhone from zooming in on focus */ /* 16px or iphone zooms in */
   font-weight: 400;
   color: var(--color-text);
 }
@@ -112,12 +123,14 @@
   outline-offset: 1px;
 }
 
+/* green "location added" */
 .shift-sheet__ok {
   margin: 0;
   font-weight: 600;
   color: #3f6b45;
 }
 
+/* grey hint if location failed */
 .shift-sheet__hint {
   margin: 0;
   font-size: 0.9rem;
@@ -125,12 +138,14 @@
   color: var(--color-muted);
 }
 
+/* photo preview + button in a row */
 .shift-sheet__photo {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
+/* square thumbnail */
 .shift-sheet__photo img,
 .shift-sheet__photo-empty {
   width: 72px;
@@ -139,6 +154,7 @@
   object-fit: cover;
 }
 
+/* dashed empty box that says optional */
 .shift-sheet__photo-empty {
   display: grid;
   place-items: center;
@@ -148,6 +164,7 @@
   color: var(--color-muted);
 }
 
+/* open truck + cancel buttons */
 .shift-sheet__primary,
 .shift-sheet__secondary {
   padding: 12px 14px;
@@ -159,11 +176,13 @@
   cursor: pointer;
 }
 
+/* filled brown */
 .shift-sheet__primary {
   background: var(--color-primary);
   color: var(--color-surface);
 }
 
+/* just an outline */
 .shift-sheet__secondary {
   background: none;
   color: var(--color-primary);
@@ -181,6 +200,7 @@
   color: #b23a32;
 }
 
+/* open button is twice as wide as cancel */
 .shift-sheet__actions {
   display: grid;
   grid-template-columns: 2fr 1fr;

@@ -1,3 +1,4 @@
+// #location - not built yet, just a placeholder page for now
 export default function Location() {
   return (
     <section>

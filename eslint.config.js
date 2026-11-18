@@ -1,3 +1,4 @@
+// lint rules (npm run lint)
 import js from '@eslint/js'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
@@ -5,7 +6,7 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist', 'dev-dist']),
+  globalIgnores(['dist', 'dev-dist']), // don't lint the build output
   {
     files: ['**/*.{js,jsx}'],
     extends: [
@@ -18,10 +19,12 @@ export default defineConfig([
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
   },
+  // service worker has different globals (self, etc)
   {
     files: ['src/sw.js'],
     languageOptions: { globals: globals.serviceworker },
   },
+  // config files run in node
   {
     files: ['*.config.js'],
     languageOptions: { globals: globals.node },

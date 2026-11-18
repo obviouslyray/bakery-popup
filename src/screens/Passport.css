@@ -1,3 +1,4 @@
+/* #passport - colors for the passport page + stamp inks */
 .passport {
   --paper: #f4ecd8;
   --paper-line: rgb(90 58 34 / 0.07);
@@ -6,21 +7,23 @@
   --ink-green: #3f6b45;
 }
 
+/* the paper page */
 .passport__page {
   position: relative;
   padding: 24px 20px 16px;
   border-radius: 6px 14px 14px 6px;
   background:
-    /* fine security-paper pattern */
+    /* faint crisscross lines like real passport paper */
     repeating-linear-gradient(45deg, var(--paper-line) 0 1px, transparent 1px 7px),
     repeating-linear-gradient(-45deg, var(--paper-line) 0 1px, transparent 1px 7px),
     radial-gradient(ellipse at 50% 35%, #faf4e4 0%, var(--paper) 70%);
   box-shadow:
-    inset 14px 0 18px -14px rgb(60 40 20 / 0.45), /* binding fold on the left */
+    inset 14px 0 18px -14px rgb(60 40 20 / 0.45), /* shadow on the left like the book's spine */
     0 6px 18px rgb(60 40 20 / 0.25);
   border: 1px solid #dccfb2;
 }
 
+/* title area at the top */
 .passport__header {
   text-align: center;
   padding-bottom: 14px;
@@ -37,6 +40,7 @@
   color: var(--color-muted);
 }
 
+/* big PASSPORT title */
 .screen .passport__title {
   margin: 4px 0;
   font-family: Georgia, 'Times New Roman', serif;
@@ -46,12 +50,13 @@
   color: var(--color-primary);
 }
 
-/* The blank page area. Fixed proportions, so stamp positions hold on any phone. */
+/* #stamps - the blank area where stamps go. fixed shape so the stamp spots line up on any phone */
 .passport__field {
   position: relative;
   aspect-ratio: 308 / 397;
 }
 
+/* stamps sit on top of the page area */
 .passport__stamps {
   position: absolute;
   inset: 0;
@@ -60,8 +65,8 @@
   list-style: none;
 }
 
-/* left/top (set inline) are the stamp's center. Centered with margins, because a
-   transform here would stop the stamp's ink from multiplying onto the paper. */
+/* #stamps - left/top come from Passport.jsx and are the center of the stamp. using margins to */
+   /* center it instead of transform, because transform breaks the ink blending onto the paper */
 .passport__spot {
   position: absolute;
   display: grid;
@@ -71,6 +76,7 @@
   margin: -15% 0 0 -15%;
 }
 
+/* "catch the truck..." text on an empty passport */
 .passport__blank {
   position: absolute;
   inset: 0;
@@ -85,6 +91,7 @@
   color: rgb(90 58 34 / 0.6);
 }
 
+/* #stamps - the round stamp itself */
 .stamp {
   --ink: var(--ink-red);
   width: 92%;
@@ -94,23 +101,25 @@
   align-items: center;
   justify-content: center;
   gap: 1px;
-  border: 2.5px double var(--ink);
+  border: 2.5px double var(--ink); /* double ring */
   border-radius: 50%;
-  outline: 1.5px solid var(--ink);
+  outline: 1.5px solid var(--ink); /* inner ring */
   outline-offset: -7px;
   color: var(--ink);
-  transform: rotate(var(--tilt, 0deg));
+  transform: rotate(var(--tilt, 0deg)); /* each stamp gets a different tilt */
   opacity: 0.85;
-  mix-blend-mode: multiply;
+  mix-blend-mode: multiply; /* looks like ink soaked into the paper */
   text-transform: uppercase;
   text-align: center;
   line-height: 1.1;
 }
 
+/* ink colors */
 .stamp--red { --ink: var(--ink-red); }
 .stamp--blue { --ink: var(--ink-blue); }
 .stamp--green { --ink: var(--ink-green); }
 
+/* city, date and hours text inside the stamp */
 .stamp__city {
   font-size: 0.72rem;
   font-weight: 800;
@@ -128,6 +137,7 @@
   letter-spacing: 0.1em;
 }
 
+/* page number + arrows at the bottom */
 .passport__footer {
   display: grid;
   grid-template-columns: 32px 1fr 32px;
@@ -140,6 +150,7 @@
   color: var(--color-muted);
 }
 
+/* grey arrow buttons */
 .passport__arrow {
   display: grid;
   place-items: center;
@@ -158,6 +169,7 @@
   cursor: default;
 }
 
+/* green when you can go to the next page */
 .passport__arrow--ready {
   color: var(--ink-green);
 }
@@ -170,6 +182,7 @@
   outline: 2px solid var(--color-accent);
 }
 
+/* #passport qr code - "move stamps" button */
 .passport__action {
   display: flex;
   align-items: center;
@@ -190,6 +203,7 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+/* #passport qr code - "share the app" button (outlined) */
 .passport__action--secondary {
   margin-top: 10px;
   background: var(--color-surface);
@@ -197,6 +211,7 @@
   box-shadow: none;
 }
 
+/* little press down effect */
 .passport__action:active {
   transform: translateY(1px);
   box-shadow: 0 2px 6px rgb(60 40 20 / 0.25);
@@ -207,7 +222,7 @@
   outline-offset: 2px;
 }
 
-/* Edge to edge: the passport page spans the full screen width and runs up to the top edge. */
+/* edge to edge - page goes full width and up to the top of the screen */
 .passport__page {
   margin: calc(-24px - env(safe-area-inset-top)) calc(-1 * var(--gutter)) 0;
   padding-top: calc(24px + env(safe-area-inset-top));

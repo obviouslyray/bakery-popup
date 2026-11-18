@@ -1,13 +1,15 @@
+// #owner lock - the secret lock for owners
 import { useEffect, useRef, useState } from 'react'
 import OwnerLoginForm from './OwnerLoginForm.jsx'
 import { useAuth } from '../lib/auth.jsx'
 import { signOut } from '../lib/supabase.js'
 import './OwnerLock.css'
 
-// Hidden owner entry: a small lock bubble (shown after 5 taps on the Passport
-// tab). Tapping it opens a login popup over the current screen.
-const BUBBLE_TIMEOUT_MS = 6000
+// little lock bubble that shows up after tapping passport 5 times.
+// tapping it opens the login popup on top of whatever screen you're on
+const BUBBLE_TIMEOUT_MS = 6000 // bubble goes away after 6 sec
 
+// lock icon, open lock if already logged in
 const LockIcon = ({ open }) => (
   <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor"
     strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -18,32 +20,35 @@ const LockIcon = ({ open }) => (
 
 export default function OwnerLock({ onClose }) {
   const { session } = useAuth()
-  const [popupOpen, setPopupOpen] = useState(false)
-  const signedInAtOpen = useRef(null)
+  const [popupOpen, setPopupOpen] = useState(false) // login popup showing?
+  const signedInAtOpen = useRef(null) // were they logged in when the popup opened
 
-  // The bubble disappears on its own if it is not tapped.
+  // bubble disappears if nobody taps it
   useEffect(() => {
     if (popupOpen) return
     const timer = setTimeout(onClose, BUBBLE_TIMEOUT_MS)
     return () => clearTimeout(timer)
   }, [popupOpen, onClose])
 
-  // Close everything once a sign-in from this popup succeeds.
+  // close everything once they log in from the popup
   useEffect(() => {
     if (popupOpen && signedInAtOpen.current === false && session) onClose()
   }, [popupOpen, session, onClose])
 
+  // escape closes it
   useEffect(() => {
     const onKey = (e) => e.key === 'Escape' && onClose()
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [onClose])
 
+  // tapped the bubble
   const openPopup = () => {
     signedInAtOpen.current = Boolean(session)
     setPopupOpen(true)
   }
 
+  // just the bubble
   if (!popupOpen) {
     return (
       <button type="button" className="owner-lock__bubble" onClick={openPopup} aria-label="Owner sign in">
@@ -52,16 +57,19 @@ export default function OwnerLock({ onClose }) {
     )
   }
 
+  // the popup, tap outside to close
   return (
     <div className="owner-lock__backdrop" onClick={onClose}>
       <div className="owner-lock__popup" role="dialog" aria-modal="true" aria-labelledby="owner-lock-title"
         onClick={(e) => e.stopPropagation()}>
+        {/* x in the corner */}
         <button type="button" className="owner-lock__x" onClick={onClose} aria-label="Close">
           <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor"
             strokeWidth="2" strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
         </button>
         <div className="owner-lock__icon"><LockIcon open={Boolean(session)} /></div>
 
+        {/* logged in = show sign out, otherwise the login form */}
         {session ? (
           <>
             <h2 id="owner-lock-title" className="owner-lock__title">Owner mode</h2>

@@ -1,8 +1,8 @@
 import { useAuth } from '../lib/auth.jsx'
 
-// Renders its children only while an owner is signed in. Signed out, nothing is
-// rendered at all. Supabase row level security is what actually protects the data.
+// #security - wrap owner buttons in this so customers don't see them.
+// this only hides stuff, the real protection is the RLS rules in supabase
 export default function OwnerOnly({ children }) {
   const { isOwner } = useAuth()
-  return isOwner ? children : null
+  return isOwner ? children : null // not logged in = render nothing
 }

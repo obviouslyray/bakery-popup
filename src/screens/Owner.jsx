@@ -1,16 +1,18 @@
+// #owner login - the /owner page
 import { Link } from 'react-router-dom'
 import OwnerLoginForm from '../components/OwnerLoginForm.jsx'
 import { useAuth } from '../lib/auth.jsx'
 import { signOut } from '../lib/supabase.js'
 import './Owner.css'
 
-// Owner sign-in page. Not linked from any customer screen; in the installed app
-// owners use the hidden lock (5 taps on the Passport tab) instead.
+// not linked anywhere customers can see. in the installed app owners use the
+// secret lock instead (tap passport 5x)
 export default function Owner() {
   const { ready, session } = useAuth()
 
-  if (!ready) return null
+  if (!ready) return null // still checking if logged in
 
+  // already logged in
   if (session) {
     return (
       <section className="owner">
@@ -22,6 +24,7 @@ export default function Owner() {
     )
   }
 
+  // not logged in, show the form
   return (
     <section className="owner">
       <h1>Owner login</h1>

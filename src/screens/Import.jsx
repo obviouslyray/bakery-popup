@@ -1,26 +1,29 @@
+// #import stamps - page that opens when you scan the transfer qr from your old phone
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { decodeStamps, loadStamps, mergeStamps, saveStamps } from '../lib/stamps.js'
 
-// Opened by scanning the transfer QR code from another phone.
+// decode the stamps from the link and figure out which ones are new
 function planImport(data) {
   const incoming = decodeStamps(data)
-  if (!incoming) return { ok: false }
+  if (!incoming) return { ok: false } // bad code
   return { ok: true, ...mergeStamps(loadStamps(), incoming) }
 }
 
 export default function Import() {
-  const [params] = useSearchParams()
-  const [result] = useState(() => planImport(params.get('d')))
-  const [saved, setSaved] = useState(true)
+  const [params] = useSearchParams() // the ?d= part of the link
+  const [result] = useState(() => planImport(params.get('d'))) // only runs once
+  const [saved, setSaved] = useState(true) // false if the phone wouldn't let us save
 
+  // save them if there's anything new
   useEffect(() => {
     if (result.ok && result.addedCount > 0 && !saveStamps(result.merged)) {
-      // Storage blocked (for example, private browsing): nothing was kept.
+      // storage blocked (like private browsing), nothing got saved
       queueMicrotask(() => setSaved(false))
     }
   }, [result])
 
+  // pick the message to show
   let heading
   let message
   if (!result.ok) {
@@ -41,6 +44,7 @@ export default function Import() {
     <section>
       <h1>{heading}</h1>
       <p className="placeholder">{message}</p>
+      {/* replace so the back button doesn't come back here */}
       <Link to="/passport" replace className="button">Open my passport</Link>
     </section>
   )

@@ -1,30 +1,35 @@
+// #install page - android install popup stuff + figuring out what phone it is
 import { useSyncExternalStore } from 'react'
 
-// Chrome on Android fires beforeinstallprompt once it decides the app can be
-// installed, often before the install page is open. We keep the event so the
-// page's Install button can show Chrome's install dialog later.
+// chrome on android fires beforeinstallprompt when it decides the app can be installed,
+// usually before you're even on the install page. we hang on to it so the
+// install button can show chrome's install popup later
 
-let deferredPrompt = null
-let snapshot = { canPrompt: false, installed: false }
+let deferredPrompt = null // the saved event
+let snapshot = { canPrompt: false, installed: false } // what the install page reads
 const listeners = new Set()
 
+// update + tell the install page
 function update(next) {
   snapshot = { ...snapshot, ...next }
   listeners.forEach((listener) => listener())
 }
 
+// called once in main.jsx
 export function initInstallPrompt() {
   window.addEventListener('beforeinstallprompt', (event) => {
-    event.preventDefault()
+    event.preventDefault() // stop chrome's own little banner
     deferredPrompt = event
     update({ canPrompt: true })
   })
+  // they installed it
   window.addEventListener('appinstalled', () => {
     deferredPrompt = null
     update({ canPrompt: false, installed: true })
   })
 }
 
+// install page uses this to know if it can show the button
 export function useInstallPrompt() {
   return useSyncExternalStore(
     (listener) => {
@@ -35,26 +40,28 @@ export function useInstallPrompt() {
   )
 }
 
-// Shows Chrome's install dialog. Resolves to 'accepted', 'dismissed' or 'unavailable'.
+// shows chrome's install popup. gives back 'accepted', 'dismissed' or 'unavailable'
 export async function promptInstall() {
   if (!deferredPrompt) return 'unavailable'
   const prompt = deferredPrompt
-  deferredPrompt = null // each event can only be used once
+  deferredPrompt = null // can only use it once
   update({ canPrompt: false })
   await prompt.prompt()
   const { outcome } = await prompt.userChoice
   return outcome
 }
 
+// iphone, android, or other
 export function detectPlatform() {
   const ua = navigator.userAgent
-  // iPadOS reports itself as a Mac, so also check for a touch screen.
+  // ipads say they're a mac, so also check for a touch screen
   const ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
   if (ios) return 'ios'
   if (/Android/.test(ua)) return 'android'
   return 'other'
 }
 
+// true if they opened it from the home screen icon
 export function isRunningInstalled() {
   return window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true
 }

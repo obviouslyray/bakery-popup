@@ -1,9 +1,11 @@
+/* #owner login - form layout */
 .owner-form {
   display: grid;
   gap: 16px;
   margin-top: 20px;
 }
 
+/* label text above each box */
 .owner-form label {
   display: grid;
   gap: 6px;
@@ -18,7 +20,7 @@
   border-radius: 10px;
   background: var(--color-surface);
   font: inherit;
-  font-size: 1rem; /* 16px keeps iPhone from zooming in on focus */
+  font-size: 1rem; /* has to be 16px or iphone zooms in when you tap it */
   color: var(--color-text);
 }
 
@@ -27,6 +29,7 @@
   outline-offset: 1px;
 }
 
+/* red error text */
 .owner-form__error {
   margin: 0;
   color: #b23a32;

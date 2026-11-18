@@ -1,9 +1,9 @@
-/* Folder tabs: Bakery and Beverages look like divider tabs in a binder. */
+/* #menu section - bakery / beverages tabs, made to look like folder tabs in a binder */
 .folders {
-  --manila: #f2e0b8;
-  --kraft: #cfae7c;
+  --manila: #f2e0b8; /* light folder color */
+  --kraft: #cfae7c; /* darker cardboard color */
   --kraft-text: #6b4c2f;
-  --page-join: #f4ebdf; /* the page background just below the tabs */
+  --page-join: #f4ebdf; /* the page background just below the tabs */ /* page color right under the tabs */
   margin-top: 18px;
 }
 
@@ -14,8 +14,8 @@
   padding-left: 2px;
 }
 
-/* The binder line: edge to edge across the screen (undoes .screen's 20px padding).
-   It sits over the unselected tab's base and under the selected tab. */
+/* line under the tabs, goes all the way across (the -20px undoes the page padding). */
+   /* it's over the back tab and under the front one */
 .folders__tabs::after {
   content: '';
   position: absolute;
@@ -27,12 +27,13 @@
   background: var(--kraft);
 }
 
+/* the tab in the back */
 .folder-tab {
   position: relative;
   z-index: 1;
   min-width: 132px;
-  margin-right: -16px; /* tabs overlap a little */
-  /* Behind: darker and a little shorter, with its base on the binder line. */
+  margin-right: -16px; /* tabs overlap a little */ /* tabs overlap a little */
+  /* back tab is darker and a bit shorter */
   padding: 6px 30px 12px 20px;
   border: 0;
   border-radius: 12px 12px 0 0;
@@ -48,7 +49,7 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Slanted right edge, like a real folder tab. */
+/* slanted right side like a real folder tab */
 .folder-tab::after {
   content: '';
   position: absolute;
@@ -63,7 +64,7 @@
   z-index: -1;
 }
 
-/* In front: covers the binder line and fades from manila into the page below. */
+/* the front tab covers the line and fades into the page */
 .folder-tab--selected {
   z-index: 3;
   padding-top: 12px;
@@ -76,19 +77,21 @@
   outline-offset: -5px;
 }
 
-/* Menu content flows on the page itself, 12px from the screen edges. */
+/* the open folder's items */
 .folders__panel {
   margin: 0 -8px;
   padding-top: 16px;
-  animation: folder-in 200ms ease-out;
+  animation: folder-in 200ms ease-out; /* fade in when switching tabs */
 }
 
+/* "coming soon" text */
 .folders__empty {
   padding: 8px 4px;
   font-size: 1.05rem;
   color: var(--kraft-text);
 }
 
+/* slide up + fade in */
 @keyframes folder-in {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: none; }
@@ -102,6 +105,7 @@
   }
 }
 
+/* list of menu items */
 .menu__list {
   display: grid;
   gap: 10px;
@@ -110,6 +114,7 @@
   list-style: none;
 }
 
+/* each item card */
 .menu-item {
   position: relative;
   display: flex;
@@ -120,6 +125,7 @@
   box-shadow: 0 2px 8px rgb(60 40 20 / 0.1);
 }
 
+/* #menu photos - small square photo */
 .menu-item__photo {
   flex: none;
   width: 64px;
@@ -133,6 +139,7 @@
   min-width: 0;
 }
 
+/* name on the left, price on the right */
 .menu-item__top {
   display: flex;
   align-items: baseline;
@@ -152,6 +159,7 @@
   color: var(--color-primary);
 }
 
+/* #sold out / #menu visibility - the little pill labels */
 .menu-item__labels {
   display: flex;
   flex-wrap: wrap;
@@ -159,6 +167,7 @@
   margin-top: 6px;
 }
 
+/* red "SOLD OUT" pill */
 .menu-item__label {
   padding: 2px 8px;
   border-radius: 999px;
@@ -170,6 +179,7 @@
   text-transform: uppercase;
 }
 
+/* grey "not on today's menu" pill (only owners see these items) */
 .menu-item__label--owner {
   background: var(--color-muted);
 }
@@ -179,6 +189,7 @@
   color: var(--color-text);
 }
 
+/* ingredients + allergens, smaller grey text */
 .menu-item__detail {
   margin: 4px 0 0;
   font-size: 0.85rem;
@@ -189,21 +200,25 @@
   font-weight: 600;
 }
 
+/* #sold out - fade the item out */
 .menu-item--sold-out .menu-item__name,
 .menu-item--sold-out .menu-item__price,
 .menu-item--sold-out .menu-item__description {
   opacity: 0.55;
 }
 
+/* and cross out the price */
 .menu-item--sold-out .menu-item__price {
   text-decoration: line-through;
 }
 
+/* #menu visibility - dashed border on items hidden from customers */
 .menu-item--off-today {
   border: 2px dashed var(--color-border);
   box-shadow: none;
 }
 
+/* stack the item and the owner buttons */
 .menu-item {
   flex-direction: column;
 }
@@ -213,6 +228,7 @@
   gap: 12px;
 }
 
+/* red error box */
 .menu__error {
   margin: 12px 0 0;
   padding: 10px 12px;
@@ -222,6 +238,7 @@
   color: #b23a32;
 }
 
+/* #menu editor - dashed "+ Add" button */
 .menu__add {
   display: block;
   width: 100%;
@@ -236,7 +253,7 @@
   cursor: pointer;
 }
 
-/* Owner controls inside an item card. */
+/* owner buttons under each item */
 .menu-owner {
   display: flex;
   flex-wrap: wrap;
@@ -247,10 +264,11 @@
   border-top: 1px dashed var(--color-border);
 }
 
-.menu-owner__spacer {
+.menu-owner__spacer { /* pushes the rest to the right */
   flex: 1;
 }
 
+/* #sold out / #menu visibility - the pill toggle buttons */
 .menu-owner__toggle {
   padding: 6px 10px;
   border: 1px solid var(--color-border);
@@ -263,12 +281,14 @@
   cursor: pointer;
 }
 
+/* brown when it's on */
 .menu-owner__toggle[aria-pressed='true'] {
   border-color: var(--color-primary);
   background: var(--color-primary);
   color: var(--color-surface);
 }
 
+/* up/down arrow buttons */
 .menu-owner__icon {
   display: grid;
   place-items: center;
@@ -282,6 +302,7 @@
   cursor: pointer;
 }
 
+/* faded when you can't use them */
 .menu-owner__icon:disabled,
 .menu-owner__toggle:disabled,
 .menu-owner__edit:disabled {
@@ -289,6 +310,7 @@
   cursor: default;
 }
 
+/* edit button */
 .menu-owner__edit {
   padding: 6px 12px;
   border: 0;
@@ -301,7 +323,7 @@
   cursor: pointer;
 }
 
-/* Section headers inside the Beverages folder, styled like labels on a folder divider. */
+/* #menu visibility - section headers in the beverages folder */
 .menu-group + .menu-group {
   margin-top: 22px;
 }
@@ -319,7 +341,7 @@
   color: var(--color-primary);
 }
 
-/* Thin kraft rule after the header text. */
+/* thin line after the header text */
 .menu-group__title::after {
   content: '';
   flex: 1;
@@ -329,6 +351,7 @@
   opacity: 0.7;
 }
 
+/* "coming soon" text under an empty section */
 .menu-group__empty {
   margin: 0 2px;
   font-size: 1rem;
@@ -336,6 +359,7 @@
   color: var(--kraft-text);
 }
 
+/* #menu visibility - box around the drinks with no section (hidden from customers) */
 .menu-group--hidden {
   padding: 10px;
   border: 2px dashed var(--kraft);
@@ -346,8 +370,8 @@
   margin-bottom: 10px;
 }
 
-/* Owner's delete X: a small close-window X in the card's corner, taking no
-   layout space. The invisible button around it keeps a finger-sized tap area. */
+/* #menu delete - the small red x in the top right corner. doesn't take up space, */
+   /* the button around it is invisible but big enough to tap */
 .menu-item__delete {
   position: absolute;
   top: 0;
@@ -373,6 +397,7 @@
   border-radius: 8px;
 }
 
+/* #menu delete - "delete ___? this can't be undone" */
 .menu-owner__confirm-text {
   flex: 1 1 100%;
   margin: 0 0 4px;
@@ -380,6 +405,7 @@
   color: #b23a32;
 }
 
+/* red delete button */
 .menu-owner__delete-yes {
   padding: 6px 14px;
   border: 0;
@@ -397,8 +423,8 @@
   cursor: default;
 }
 
-/* Edge to edge: menu items run the full screen width as stacked rows; headings,
-   messages and buttons keep the page's side padding. */
+/* edge to edge - items go the full width of the screen like rows. */
+   /* headings/messages/buttons keep the normal side padding */
 .folders__panel {
   margin: 0 calc(-1 * var(--gutter));
 }
@@ -428,6 +454,7 @@
   margin-inline: var(--gutter);
 }
 
+/* undo it again for the hidden box */
 .menu-group--hidden {
   margin-inline: var(--gutter);
 }
