@@ -1,4 +1,3 @@
-import React from 'react';
 import { getSignState, FLIP_DURATION_MS } from './signState.js';
 import './SignFlip.css';
 

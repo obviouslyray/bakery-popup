@@ -1,4 +1,3 @@
-import React from 'react';
 import SignFlip from './SignFlip.jsx';
 import { getSignState } from './signState.js';
 import defaultWindowImage from './truck-window.svg';
