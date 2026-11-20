@@ -5,6 +5,7 @@ import {
   uploadMenuPhoto,
 } from '../lib/menu.js'
 import './MenuItemEditor.css'
+import './MenuDescription.css'
 
 // item is null when adding a new one
 export default function MenuItemEditor({ item, defaultCategory, nextSortOrder, onClose, onSaved }) {
@@ -58,8 +59,11 @@ export default function MenuItemEditor({ item, defaultCategory, nextSortOrder, o
     e.preventDefault()
     const name = form.name.trim()
     const price = Number(form.price.replace('$', '').trim()) // take out a $ if they typed one
-    // check the name and price first
+    // check the name, description and price before saving
     if (!name) return setError('Add a name.')
+    if (form.description.length > 1000) {
+      return setError('Keep the description to 1,000 characters or fewer.')
+    }
     if (form.price.trim() === '' || !Number.isFinite(price) || price < 0 || price > 9999.99) {
       return setError('Enter a price, like 4.50.')
     }
@@ -177,7 +181,12 @@ export default function MenuItemEditor({ item, defaultCategory, nextSortOrder, o
 
         <label className="editor__field">
           Description
-          <textarea value={form.description} onChange={set('description')} rows={2} maxLength={200} />
+          <textarea value={form.description} onChange={set('description')} rows={5} maxLength={1000}
+            aria-describedby="menu-description-help"
+            placeholder="Describe flavors, preparation, serving size, and available options." />
+          <span id="menu-description-help" className="editor__hint">
+            {form.description.length}/1,000 characters
+          </span>
         </label>
 
         <label className="editor__field">
