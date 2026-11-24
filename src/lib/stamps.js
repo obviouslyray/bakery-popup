@@ -1,10 +1,9 @@
 // #stamps - passport stamps are saved on the phone (localStorage). no customer accounts,
 // so the qr code is how you move them to a new phone
 
-const STORAGE_KEY = 'passport-stamps-v2' // v2 because the first version had fake sample stamps
+const STORAGE_KEY = 'passport-stamps-v2' // where the stamps get saved
 
-// old version saved 12 sample stamps on every phone that opened passport.
-// they weren't real so we delete them
+// old storage key, cleared out when stamps load
 const LEGACY_SAMPLE_KEY = 'passport-stamps'
 
 const sortByDate = (stamps) => [...stamps].sort((a, b) => a.date.localeCompare(b.date)) // oldest first
@@ -17,7 +16,7 @@ const isStamp = (s) =>
 // #stamps - load stamps from the phone
 export function loadStamps() {
   try {
-    localStorage.removeItem(LEGACY_SAMPLE_KEY) // get rid of the old fake ones
+    localStorage.removeItem(LEGACY_SAMPLE_KEY) // clear the old key
     const raw = localStorage.getItem(STORAGE_KEY)
     if (raw === null) return [] // nothing saved yet
     const parsed = JSON.parse(raw)

@@ -67,7 +67,7 @@ function startWatching() {
 }
 
 // this has to be out here and not inside the hook. if it's inside, react makes a new
-// one every render and it kept re-subscribing (we had a bug with way too many requests)
+// one every render and it re-subscribes every time
 function subscribe(listener) {
   listeners.add(listener)
   if (listeners.size === 1) stopWatching = startWatching() // first one starts it
